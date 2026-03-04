@@ -21,7 +21,7 @@ def verify_token(credentials: HTTPAuthorizationCredentials = Depends(security)):
         payload = jwt.decode(token, jwks, algorithms=["ES256"], audience="authenticated")
         return payload
     
-    except Exception as e:
+    except Exception:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Invalid or expired token",
