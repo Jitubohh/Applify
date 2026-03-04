@@ -8,17 +8,21 @@ import requests
 security = HTTPBearer()
 
 def get_jwks():
-    response = requests.get(f"{settings.SUPABASE_URL}/auth/v1/keys")
+    url = f"{settings.SUPABASE_URL}/auth/v1/.well-known/jwks.json"
+    response = requests.get(url)
     return response.json()
+
 
 def verify_token(credentials: HTTPAuthorizationCredentials = Depends(security)):
     token = credentials.credentials
     jwks = get_jwks()
+
     try:
-        payload = jwt.decode(token, jwks, algorithms=["RS256"], audience="authenticated")
+        payload = jwt.decode(token, jwks, algorithms=["ES256"], audience="authenticated")
         return payload
     
-    except Exception:
+    except Exception as e:
+        print("ERROR:", e)
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Invalid or expired token",
