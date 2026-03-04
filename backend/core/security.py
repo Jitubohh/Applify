@@ -22,7 +22,6 @@ def verify_token(credentials: HTTPAuthorizationCredentials = Depends(security)):
         return payload
     
     except Exception as e:
-        print("ERROR:", e)
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Invalid or expired token",
