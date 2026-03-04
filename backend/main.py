@@ -2,6 +2,7 @@
 from fastapi import FastAPI
 from routers.auth import auth_router
 from routers.resume import resume_router
+from routers.analysis import analysis_router
 
 app = FastAPI(
     title = "Applify API",
@@ -11,6 +12,8 @@ app = FastAPI(
 app.include_router(auth_router, prefix="/auth")
 
 app.include_router(resume_router, prefix="/resume")
+
+app.include_router(analysis_router, prefix="/analysis")
 
 @app.get("/")
 def root():
