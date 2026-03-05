@@ -12,5 +12,6 @@ class Settings:
     SUPABASE_KEY: str = os.getenv("SUPABASE_KEY")
     SUPABASE_JWT_SECRET: str = os.getenv("SUPABASE_JWT_SECRET")
     SUPABASE_SERVICE_ROLE_KEY: str = os.getenv("SUPABASE_SERVICE_ROLE_KEY")
+    NVIDIA_API_KEY: str = os.getenv("NVIDIA_API_KEY")
 
 settings = Settings()
