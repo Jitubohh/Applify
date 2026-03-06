@@ -6,7 +6,7 @@ from services.extraction_service import run_extraction
 #process and store resume data
 def process_resume(file: UploadFile, user_id: str):
     text = extract_text_from_pdf(file)
-    #Convert pydantic model to dict for supabase storage
+    #Convert pydantic model to dict for storage
     structured_resume = run_extraction(text).model_dump()
     client = get_supabase_client()
     file_path = f"{user_id}/{file.filename}"
