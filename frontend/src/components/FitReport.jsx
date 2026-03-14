@@ -1,1 +1,0 @@
-// Fit report component

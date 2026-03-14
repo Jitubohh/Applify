@@ -1,1 +1,0 @@
-// Resume manager page component
