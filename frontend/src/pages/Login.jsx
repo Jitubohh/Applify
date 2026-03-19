@@ -28,14 +28,13 @@ function Login() {
   return (
     <div className="min-h-screen flex bg-[#1A1A1A]">
       <div>
-            <img src={loginImage} alt="Login" className="rounded-3xl"/>
+            <img src={loginImage} alt="Login" className="rounded-3xl max-h-screen"/>
       </div>
 
-      <div className="w-full max-w-md px-4 mt-10">
+      <div className="w-full max-w-md px-4 mt-10 ml-5">
 
-        {/* Brand */}
          <div className="mb-8">
-            <h1 className="text-4xl font-bold text-[#F5F0E8] tracking-tight">Applify</h1>
+            <h1 className="text-4xl font-bold text-green-400 tracking-tight">Applify</h1>
             <p className="text-[#9C9A9A] mt-2 text-sm">
               Your AI-powered resume intelligence agent
             </p>

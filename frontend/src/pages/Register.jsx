@@ -11,6 +11,19 @@ function Register() {
     const navigate = useNavigate();
 
     const handleSignUp = async (e) => {
+        if (!email || !password) {
+        setError('Please fill in all fields');
+        setLoading(false);
+        return;
+    }
+
+    if (password.length < 6) {
+        setError('Password must be at least 6 characters');
+        setLoading(false);
+        return;
+    }
+
+
         e.preventDefault();
             setLoading(true);
             setError('');
@@ -33,8 +46,8 @@ function Register() {
 
         {/* Brand */}
          <div className="mb-8 justify-center items-center text-center">
-            <h1 className="text-4xl font-bold text-[#F5F0E8] tracking-tight">Applify</h1>
-            <p className="text-[#9C9A9A] mt-2 text-sm">
+            <h1 className="text-4xl font-bold text-green-400 tracking-tight">Applify</h1>
+            <p className="text-white mt-2 text-sm">
               Start your journey with Applify
             </p>
           </div>
