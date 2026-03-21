@@ -3,12 +3,11 @@ import { useNavigate } from 'react-router-dom';
 import supabase from '../services/supabase';
 import axios from 'axios';
 import {
-  LayoutDashboard, FileText, History, Settings, LogOut, Upload, Briefcase, ChevronRight
+  LayoutDashboard, FileText, History, Settings, LogOut, Upload, Briefcase, ChevronRight, ArrowLeft
 } from 'lucide-react';
 import {ThreeDot} from 'react-loading-indicators'
 import { CircularProgressbar } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
-
 
 const API = 'http://127.0.0.1:8000';
 
@@ -51,6 +50,8 @@ function Dashboard() {
   const [file, setFile] = useState(null);
   const [jobDescription, setJobDescription] = useState('');
   const [resumeId, setResumeId] = useState(null);
+  const [analysisId, setAnalysisId] = useState(null);
+  const [fittedResume, setFittedResume] = useState(null);
   const [resumes, setResumes] = useState([]);
   const [analysis, setAnalysis] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -90,7 +91,9 @@ function Dashboard() {
     } catch (err) {
       setError('Resume upload failed. Please try again.');
     }
+    finally{
     setLoading(false);
+    }
   };
 
   const fetchResumes = async (token) => {
@@ -99,6 +102,36 @@ function Dashboard() {
       });
     setResumes(res.data.data);
   }
+
+  const handleResumeUpgrade = async () => {
+    try{
+      setLoading(true);
+      const token = await getToken();
+      const res = await axios.post(
+        `${API}/upgrade/fit-resume`,
+      { resume_id: resumeId, analysis_id: analysisId },
+      { 
+      headers: { Authorization: `Bearer ${token}` },
+      responseType: 'blob'  // tells axios to expect binary data
+    }
+  );
+  // Create a download link and click it automatically
+  const url = window.URL.createObjectURL(new Blob([res.data]));
+  const link = document.createElement('a');
+  link.href = url;
+  link.setAttribute('download', 'fitted_resume.pdf');
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+  }
+  catch(err){
+      setError('Resume upgrade failed. Please try again.');
+      return;
+  }
+  finally{
+    setLoading(false);
+  }
+};
 
   const handleAnalysis = async () => {
     if (!jobDescription) return setError('Please enter a job description');
@@ -111,11 +144,14 @@ function Dashboard() {
         { headers: { Authorization: `Bearer ${token}` } }
       );
       setAnalysis(res.data.data[0].analysis_json);
+      setAnalysisId(res.data.data[0].id);
       setStep('results');
     } catch (err) {
       setError('Analysis failed. Please try again.');
     }
+    finally{
     setLoading(false);
+    }
   };
 
   const handleLogout = async () => {
@@ -280,6 +316,11 @@ function Dashboard() {
             <div className="max-w-2xl">
               <div className="bg-white rounded-2xl border border-gray-200 p-8 shadow-sm">
                 <div className="flex items-center gap-3 mb-2">
+                  <div className="flex justify-end mb-2">
+                    <button onClick={() => setStep('upload')} className="text-[#9C9A9A] hover:text-[#2C2F2E] transition">
+                        <ArrowLeft size={20} />
+                    </button>
+                  </div>
                   <div className="w-10 h-10 bg-[#4A7C59]/10 rounded-xl flex items-center justify-center">
                     <Briefcase size={20} className="text-[#4A7C59]" />
                   </div>
@@ -309,6 +350,11 @@ function Dashboard() {
           {/* Step 3 - Results */}
           {step === 'results' && analysis && (
             <div className="grid grid-cols-1 gap-6 max-w-3xl">
+              <div className="flex justify-end mb-2">
+                  <button onClick={() => setStep('analyze')} className="text-[#9C9A9A] hover:text-[#2C2F2E] transition">
+                      <ArrowLeft size={20} />
+                  </button>
+              </div>
 
               {/* Score Card */}
               <div className="bg-white rounded-2xl border border-gray-200 p-8 shadow-sm flex flex-col items-center">
@@ -368,13 +414,23 @@ function Dashboard() {
               </div>
 
               {/* Fit Resume Button */}
-              <button className="w-full bg-[#4A7C59] hover:bg-[#3d6849] text-white font-semibold py-3 rounded-xl transition text-base">
-                Fit Resume to Job Description
+              <button className="w-full bg-[#4A7C59] hover:bg-[#3d6849] text-white font-semibold py-3 rounded-xl transition text-base"
+                onClick={handleResumeUpgrade}
+                disabled={loading}
+                >
+                {loading ? <ThreeDot variant="brick-stack" color="white" size="small"/> : 'Fit Resume to Job Description'}
               </button>
 
               <button
-                onClick={() => { setStep('upload'); setAnalysis(null); setFile(null); setJobDescription(''); }}
                 className="w-full border border-gray-200 text-[#9C9A9A] hover:text-[#2C2F2E] hover:border-gray-300 font-semibold py-3 rounded-xl transition text-sm"
+                onClick={() => {
+                  setStep('upload'); 
+                  setAnalysis(null); 
+                  setFile(null); 
+                  setJobDescription(''); 
+                  setResumeId(null);
+                  setAnalysisId(null);
+                }}
               >
                 Analyze Another Resume
               </button>
