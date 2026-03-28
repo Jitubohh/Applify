@@ -10,14 +10,25 @@ from langchain_core.output_parsers import StrOutputParser
 llm = ChatNVIDIA(model="meta/llama-3.1-8b-instruct", nvidia_api_key = settings.NVIDIA_API_KEY)
 
 prompt = ChatPromptTemplate.from_messages([
-    ("system","You are a resume grading and improvement assistant"
-    "You'll recieve a resume in plain text format and extract the relevant information to fill out a structured resume format. Only extract information that is present in the resume, " \
-    "\n\n{format_instructions}. Follow the format precisely, including quotations and commas"
-    "do not make assumptions or add information that is not explicitly stated in the resume. If certain sections of the resume are missing, leave them blank or empty. " \
-    "Always return the output in the specified structured format and ensure it adheres to the Pydantic model provided"),
+    ("system",
+     "You are a professional resume extraction assistant. "
+     "You will receive a resume in plain text format and extract all relevant information into a structured format. "
+     "This resume could be from ANY profession — software engineering, healthcare, finance, marketing, design, law, education, etc. "
+     "Extract only information explicitly present in the resume. "
+     "Do not make assumptions or add information not stated in the resume. "
+     "If a section is missing leave it as an empty list or empty string. "
+     "Extract all of the following if present: "
+     "name, email, phone, location, linkedin, github, website, summary, skills, "
+     "experience (with company, role, duration, location, responsibilities), "
+     "education (with institution, degree, field of study, graduation date, gpa, location), "
+     "projects (with name, description, technologies), "
+     "certifications (with name, issuer, date), "
+     "volunteer work (with organization, role, duration, description), "
+     "awards, languages, publications (with title, publisher, date). "
+     "Follow the format instructions exactly.\n\n{format_instructions}"
+     ),
     ("human", "{resume_text}")
-]
-)
+])
 
 
 def extract_resume(pydantic_class, llm, prompt):
