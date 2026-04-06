@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import supabase from '../services/supabase';
 import axios from 'axios';
 import {
@@ -51,7 +51,6 @@ function Dashboard() {
   const [jobDescription, setJobDescription] = useState('');
   const [resumeId, setResumeId] = useState(null);
   const [analysisId, setAnalysisId] = useState(null);
-  const [fittedResume, setFittedResume] = useState(null);
   const [resumes, setResumes] = useState([]);
   const [analysis, setAnalysis] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -163,7 +162,6 @@ function Dashboard() {
     { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
     { id: 'resume', label: 'My Resumes', icon: FileText },
     { id: 'history', label: 'History', icon: History },
-    { id: 'settings', label: 'Settings', icon: Settings },
   ];
 
   return (
@@ -176,7 +174,10 @@ function Dashboard() {
           {navItems.map(({ id, label, icon: Icon }) => (
             <button
               key={id}
-              onClick={() => setActiveNav(id)}
+              onClick={() => {
+                setActiveNav(id); 
+                navigate(`/${id}`);
+              }}
               className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition w-full text-left
                 ${activeNav === id
                   ? 'bg-[#4A7C59]/10 text-[#4A7C59]'
