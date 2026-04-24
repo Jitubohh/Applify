@@ -7,24 +7,17 @@ import {
   FileText,
   History,
   LogOut,
-  ChevronRight
+  ChevronRight,
+  Menu,
+  X
 } from 'lucide-react';
 
 const API = 'http://127.0.0.1:8000';
 
-function Avatar({ email }) {
-  const initials = email ? email.slice(0, 2).toUpperCase() : '??';
-  return (
-    <div className="w-9 h-9 rounded-full bg-[#4A7C59] flex items-center justify-center text-white text-sm font-bold">
-      {initials}
-    </div>
-  );
-}
-
 function ScoreBadge({ score }) {
   const color =
     score >= 70
-      ? 'bg-[#4A7C59]/10 text-[#4A7C59]'
+      ? 'bg-app-brand/10 text-app-brand'
       : score >= 40
       ? 'bg-yellow-100 text-yellow-600'
       : 'bg-red-50 text-red-400';
@@ -43,19 +36,13 @@ function ScoreCircle({ score }) {
 
   return (
     <svg width="120" height="120">
+      <circle cx="60" cy="60" r={radius} stroke="#E5E7EB" strokeWidth="10" fill="none" />
       <circle
         cx="60"
         cy="60"
         r={radius}
-        stroke="#E5E7EB"
-        strokeWidth="10"
-        fill="none"
-      />
-      <circle
-        cx="60"
-        cy="60"
-        r={radius}
-        stroke="#4A7C59"
+        className="text-app-brand"
+        stroke="currentColor"
         strokeWidth="10"
         fill="none"
         strokeDasharray={circumference}
@@ -63,13 +50,7 @@ function ScoreCircle({ score }) {
         strokeLinecap="round"
         transform="rotate(-90 60 60)"
       />
-      <text
-        x="50%"
-        y="50%"
-        textAnchor="middle"
-        dy=".3em"
-        className="text-lg font-bold fill-[#2C2F2E]"
-      >
+      <text x="50%" y="50%" textAnchor="middle" dy=".3em" className="text-lg font-bold fill-app-text">
         {score}%
       </text>
     </svg>
@@ -77,21 +58,18 @@ function ScoreCircle({ score }) {
 }
 
 function HistoryPage() {
-  const [user, setUser] = useState(null);
   const [analyses, setAnalyses] = useState([]);
   const [selectedAnalysis, setSelectedAnalysis] = useState(null);
   const [loading, setLoading] = useState(true);
   const [activeNav, setActiveNav] = useState('history');
+  const [mobileNavOpen, setMobileNavOpen] = useState(false);
 
   const navigate = useNavigate();
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
       if (!session) navigate('/login');
-      else {
-        setUser(session.user);
-        fetchAnalyses(session.access_token);
-      }
+      else fetchAnalyses(session.access_token);
     });
   }, []);
 
@@ -119,13 +97,55 @@ function HistoryPage() {
   ];
 
   return (
-    <div className="min-h-screen flex bg-[#F0F2F5] text-[#2C2F2E]">
+    <div className="min-h-screen flex flex-col md:flex-row bg-app-page text-app-text">
+      <aside className="w-full md:w-64 bg-white border-b md:border-b-0 md:border-r border-gray-200 flex md:flex-col py-4 md:py-6 px-4 md:fixed md:h-full relative">
+        <div className="md:hidden w-full flex items-center justify-between">
+          <h1 className="text-xl font-bold">Applify</h1>
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => setMobileNavOpen((v) => !v)}
+              className="p-2 rounded-lg text-app-muted hover:bg-gray-100 hover:text-app-text transition"
+              aria-label="Toggle navigation"
+            >
+              {mobileNavOpen ? <X size={20} /> : <Menu size={20} />}
+            </button>
 
-      {/* Sidebar */}
-      <aside className="w-64 bg-white border-r border-gray-200 flex flex-col py-6 px-4 fixed h-full">
-        <h1 className="text-2xl font-bold px-2 mb-8">Applify</h1>
+            <button
+              onClick={handleLogout}
+              className="p-2 rounded-lg text-app-muted hover:bg-red-50 hover:text-red-500 transition"
+              aria-label="Logout"
+            >
+              <LogOut size={18} />
+            </button>
+          </div>
+        </div>
 
-        <nav className="flex flex-col gap-1 flex-1">
+        <div className={`${mobileNavOpen ? 'block' : 'hidden'} md:hidden absolute top-full left-0 right-0 bg-white border-b border-gray-200 shadow-sm z-20 p-3`}>
+          <nav className="flex flex-col gap-1">
+            {navItems.map(({ id, label, icon: Icon }) => (
+              <button
+                key={id}
+                onClick={() => {
+                  setActiveNav(id);
+                  setMobileNavOpen(false);
+                  navigate(`/${id}`);
+                }}
+                className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition text-left
+                  ${activeNav === id
+                    ? 'bg-app-brand/10 text-app-brand'
+                    : 'text-app-muted hover:bg-gray-100 hover:text-app-text'
+                  }`}
+              >
+                <Icon size={18} />
+                {label}
+              </button>
+            ))}
+          </nav>
+        </div>
+
+        <h1 className="hidden md:block text-2xl font-bold px-2 mb-8">Applify</h1>
+
+        <nav className="hidden md:flex md:flex-col gap-1 flex-1">
           {navItems.map(({ id, label, icon: Icon }) => (
             <button
               key={id}
@@ -133,11 +153,10 @@ function HistoryPage() {
                 setActiveNav(id);
                 navigate(`/${id}`);
               }}
-              className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition
-                ${
-                  activeNav === id
-                    ? 'bg-[#4A7C59]/10 text-[#4A7C59]'
-                    : 'text-[#9C9A9A] hover:bg-gray-100 hover:text-[#2C2F2E]'
+              className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition whitespace-nowrap
+                ${activeNav === id
+                  ? 'bg-app-brand/10 text-app-brand'
+                  : 'text-app-muted hover:bg-gray-100 hover:text-app-text'
                 }`}
             >
               <Icon size={18} />
@@ -148,22 +167,15 @@ function HistoryPage() {
 
         <button
           onClick={handleLogout}
-          className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm text-[#9C9A9A] hover:bg-red-50 hover:text-red-500"
+          className="hidden md:flex ml-2 md:ml-0 items-center gap-3 px-3 py-2.5 rounded-xl text-sm text-app-muted hover:bg-red-50 hover:text-red-500 transition whitespace-nowrap"
         >
           <LogOut size={18} />
           Logout
         </button>
       </aside>
 
-      {/* Main */}
-      <div className="ml-64 flex-1 flex flex-col">
-        <header className="bg-white border-b px-8 py-4 flex justify-end">
-          {user && <Avatar email={user.email} />}
-        </header>
-
-        <main className="p-8 flex-1">
-
-          {/* SWITCH VIEW */}
+      <div className="md:ml-64 flex-1 flex flex-col">
+        <main className="p-4 sm:p-6 md:p-8 flex-1">
           {!selectedAnalysis ? (
             <>
               <h2 className="text-xl font-semibold mb-6">Analysis History</h2>
@@ -171,32 +183,23 @@ function HistoryPage() {
               {loading ? (
                 <p className="text-sm text-gray-400">Loading...</p>
               ) : analyses.length === 0 ? (
-                <p>No analyses yet.</p>
+                <p className="text-app-muted">No analyses yet.</p>
               ) : (
                 <div className="space-y-4 max-w-3xl">
                   {analyses.map((item) => (
                     <div
                       key={item.id}
-                      onClick={() => {setSelectedAnalysis(item.analysis_json);}
-                      }
-                      className="bg-white p-6 rounded-xl shadow-sm flex justify-between cursor-pointer hover:border-[#4A7C59] border"
+                      onClick={() => setSelectedAnalysis(item.analysis_json)}
+                      className="bg-white p-6 rounded-xl shadow-sm flex justify-between cursor-pointer hover:border-app-brand border border-gray-200 transition"
                     >
                       <div>
-                        <p className="text-sm mb-2">
-                          {item.job_description.slice(0, 100)}...
-                        </p>
-                        <p className="text-xs text-gray-400">
-                          {new Date(item.created_at).toLocaleDateString()}
-                        </p>
+                        <p className="text-sm mb-2">{item.job_description.slice(0, 100)}...</p>
+                        <p className="text-xs text-gray-400">{new Date(item.created_at).toLocaleDateString()}</p>
                       </div>
 
                       <div className="flex items-center gap-3">
-                        <ScoreBadge
-                          score={Math.round(
-                            item.analysis_json?.match_score || 0
-                          )}
-                        />
-                        <ChevronRight size={16} />
+                        <ScoreBadge score={Math.round(item.analysis_json?.match_score || 0)} />
+                        <ChevronRight size={16} className="text-gray-400" />
                       </div>
                     </div>
                   ))}
@@ -205,26 +208,16 @@ function HistoryPage() {
             </>
           ) : (
             <>
-              {/* BACK */}
-              <button
-                onClick={() => setSelectedAnalysis(null)}
-                className="mb-6 text-sm text-[#4A7C59]"
-              >
+              <button onClick={() => setSelectedAnalysis(null)} className="mb-6 text-sm text-app-brand">
                 ← Back to History
               </button>
 
-              {/* SCORE */}
-              <div className="bg-white p-8 rounded-xl shadow-sm flex flex-col items-center mb-6">
-                <ScoreCircle
-                  score={Math.round(selectedAnalysis.match_score || 0)}
-                />
-                <p className="text-sm text-gray-500 mt-4 text-center">
-                  {selectedAnalysis.overall_summary}
-                </p>
+              <div className="bg-white p-6 sm:p-8 rounded-xl shadow-sm flex flex-col items-center mb-6">
+                <ScoreCircle score={Math.round(selectedAnalysis.match_score || 0)} />
+                <p className="text-sm text-gray-500 mt-4 text-center">{selectedAnalysis.overall_summary}</p>
               </div>
 
-              {/* SKILLS */}
-              <div className="grid grid-cols-2 gap-6 mb-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
                 <div className="bg-white p-6 rounded-xl shadow-sm">
                   <h3 className="text-green-600 mb-3">Matched Skills</h3>
                   <div className="flex flex-wrap gap-2">
@@ -248,20 +241,18 @@ function HistoryPage() {
                 </div>
               </div>
 
-              {/* SUGGESTIONS */}
               <div className="bg-white p-6 rounded-xl shadow-sm mb-6">
                 <h3 className="mb-3">Suggestions</h3>
-                <ul>
+                <ul className="space-y-2 text-sm text-app-muted">
                   {selectedAnalysis.improvement_suggestions?.map((s, i) => (
                     <li key={i}>• {s}</li>
                   ))}
                 </ul>
               </div>
 
-              {/* PROJECTS */}
               <div className="bg-white p-6 rounded-xl shadow-sm">
                 <h3 className="mb-3">Suggested Projects</h3>
-                <ul>
+                <ul className="space-y-2 text-sm text-app-muted">
                   {selectedAnalysis.suggested_projects?.map((p, i) => (
                     <li key={i}>• {p}</li>
                   ))}
@@ -269,7 +260,6 @@ function HistoryPage() {
               </div>
             </>
           )}
-
         </main>
       </div>
     </div>
