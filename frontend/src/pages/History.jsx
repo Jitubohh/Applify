@@ -19,8 +19,8 @@ function ScoreBadge({ score }) {
     score >= 70
       ? 'bg-app-brand/10 text-app-brand'
       : score >= 40
-      ? 'bg-yellow-100 text-yellow-600'
-      : 'bg-red-50 text-red-400';
+      ? 'bg-yellow-100 dark:bg-yellow-900/20 text-yellow-600 dark:text-yellow-400'
+      : 'bg-red-50 dark:bg-red-900/20 text-red-400';
 
   return (
     <span className={`text-sm font-bold px-3 py-1 rounded-full ${color}`}>
@@ -50,7 +50,7 @@ function ScoreCircle({ score }) {
         strokeLinecap="round"
         transform="rotate(-90 60 60)"
       />
-      <text x="50%" y="50%" textAnchor="middle" dy=".3em" className="text-lg font-bold fill-app-text">
+      <text x="50%" y="50%" textAnchor="middle" dy=".3em" className="text-lg font-bold fill-app-text dark:fill-app-ivory">
         {score}%
       </text>
     </svg>
@@ -97,14 +97,14 @@ function HistoryPage() {
   ];
 
   return (
-    <div className="min-h-screen flex flex-col md:flex-row bg-app-page text-app-text">
-      <aside className="w-full md:w-64 bg-white border-b md:border-b-0 md:border-r border-gray-200 flex md:flex-col py-4 md:py-6 px-4 md:fixed md:h-full relative">
+    <div className="min-h-screen flex flex-col md:flex-row bg-app-page dark:bg-app-dark text-app-text dark:text-app-ivory">
+      <aside className="w-full md:w-64 bg-white dark:bg-app-panel border-b md:border-b-0 md:border-r border-gray-200 dark:border-app-muted/30 flex md:flex-col py-4 md:py-6 px-4 md:fixed md:h-full relative">
         <div className="md:hidden w-full flex items-center justify-between">
           <h1 className="text-xl font-bold">Applify</h1>
           <div className="flex items-center gap-2">
             <button
               onClick={() => setMobileNavOpen((v) => !v)}
-              className="p-2 rounded-lg text-app-muted hover:bg-gray-100 hover:text-app-text transition"
+              className="p-2 rounded-lg text-app-muted hover:bg-gray-100 dark:hover:bg-app-input hover:text-app-text dark:hover:text-app-ivory transition"
               aria-label="Toggle navigation"
             >
               {mobileNavOpen ? <X size={20} /> : <Menu size={20} />}
@@ -120,7 +120,7 @@ function HistoryPage() {
           </div>
         </div>
 
-        <div className={`${mobileNavOpen ? 'block' : 'hidden'} md:hidden absolute top-full left-0 right-0 bg-white border-b border-gray-200 shadow-sm z-20 p-3`}>
+        <div className={`${mobileNavOpen ? 'block' : 'hidden'} md:hidden absolute top-full left-0 right-0 bg-white dark:bg-app-panel border-b border-gray-200 dark:border-app-muted/30 shadow-sm z-20 p-3`}>
           <nav className="flex flex-col gap-1">
             {navItems.map(({ id, label, icon: Icon }) => (
               <button
@@ -133,7 +133,7 @@ function HistoryPage() {
                 className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition text-left
                   ${activeNav === id
                     ? 'bg-app-brand/10 text-app-brand'
-                    : 'text-app-muted hover:bg-gray-100 hover:text-app-text'
+                    : 'text-app-muted hover:bg-gray-100 dark:hover:bg-app-input hover:text-app-text dark:hover:text-app-ivory'
                   }`}
               >
                 <Icon size={18} />
@@ -143,7 +143,7 @@ function HistoryPage() {
           </nav>
         </div>
 
-        <h1 className="hidden md:block text-2xl font-bold px-2 mb-8">Applify</h1>
+        <h1 className="hidden md:block text-2xl font-bold px-2 mb-8 text-app-text dark:text-app-ivory">Applify</h1>
 
         <nav className="hidden md:flex md:flex-col gap-1 flex-1">
           {navItems.map(({ id, label, icon: Icon }) => (
@@ -156,7 +156,7 @@ function HistoryPage() {
               className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition whitespace-nowrap
                 ${activeNav === id
                   ? 'bg-app-brand/10 text-app-brand'
-                  : 'text-app-muted hover:bg-gray-100 hover:text-app-text'
+                  : 'text-app-muted hover:bg-gray-100 dark:hover:bg-app-input hover:text-app-text dark:hover:text-app-ivory'
                 }`}
             >
               <Icon size={18} />
@@ -167,7 +167,7 @@ function HistoryPage() {
 
         <button
           onClick={handleLogout}
-          className="hidden md:flex ml-2 md:ml-0 items-center gap-3 px-3 py-2.5 rounded-xl text-sm text-app-muted hover:bg-red-50 hover:text-red-500 transition whitespace-nowrap"
+          className="hidden md:flex ml-2 md:ml-0 items-center gap-3 px-3 py-2.5 rounded-xl text-sm text-app-muted hover:bg-red-50 dark:hover:bg-red-900/20 hover:text-red-500 transition whitespace-nowrap"
         >
           <LogOut size={18} />
           Logout
@@ -178,10 +178,10 @@ function HistoryPage() {
         <main className="p-4 sm:p-6 md:p-8 flex-1">
           {!selectedAnalysis ? (
             <>
-              <h2 className="text-xl font-semibold mb-6">Analysis History</h2>
+              <h2 className="text-xl font-semibold text-app-text dark:text-app-ivory mb-6">Analysis History</h2>
 
               {loading ? (
-                <p className="text-sm text-gray-400">Loading...</p>
+                <p className="text-sm text-gray-400 dark:text-app-muted">Loading...</p>
               ) : analyses.length === 0 ? (
                 <p className="text-app-muted">No analyses yet.</p>
               ) : (
@@ -190,16 +190,16 @@ function HistoryPage() {
                     <div
                       key={item.id}
                       onClick={() => setSelectedAnalysis(item.analysis_json)}
-                      className="bg-white p-6 rounded-xl shadow-sm flex justify-between cursor-pointer hover:border-app-brand border border-gray-200 transition"
+                      className="bg-white dark:bg-app-panel p-6 rounded-xl shadow-sm flex justify-between cursor-pointer hover:border-app-brand border border-gray-200 dark:border-app-muted/30 transition"
                     >
                       <div>
-                        <p className="text-sm mb-2">{item.job_description.slice(0, 100)}...</p>
-                        <p className="text-xs text-gray-400">{new Date(item.created_at).toLocaleDateString()}</p>
+                        <p className="text-sm text-app-text dark:text-app-ivory mb-2">{item.job_description.slice(0, 100)}...</p>
+                        <p className="text-xs text-gray-400 dark:text-app-muted">{new Date(item.created_at).toLocaleDateString()}</p>
                       </div>
 
                       <div className="flex items-center gap-3">
                         <ScoreBadge score={Math.round(item.analysis_json?.match_score || 0)} />
-                        <ChevronRight size={16} className="text-gray-400" />
+                        <ChevronRight size={16} className="text-gray-400 dark:text-app-muted" />
                       </div>
                     </div>
                   ))}
@@ -212,28 +212,28 @@ function HistoryPage() {
                 ← Back to History
               </button>
 
-              <div className="bg-white p-6 sm:p-8 rounded-xl shadow-sm flex flex-col items-center mb-6">
+              <div className="bg-white dark:bg-app-panel p-6 sm:p-8 rounded-xl shadow-sm border border-gray-200 dark:border-app-muted/30 flex flex-col items-center mb-6">
                 <ScoreCircle score={Math.round(selectedAnalysis.match_score || 0)} />
-                <p className="text-sm text-gray-500 mt-4 text-center">{selectedAnalysis.overall_summary}</p>
+                <p className="text-sm text-gray-500 dark:text-app-muted mt-4 text-center">{selectedAnalysis.overall_summary}</p>
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-                <div className="bg-white p-6 rounded-xl shadow-sm">
+                <div className="bg-white dark:bg-app-panel p-6 rounded-xl shadow-sm border border-gray-200 dark:border-app-muted/30">
                   <h3 className="text-green-600 mb-3">Matched Skills</h3>
                   <div className="flex flex-wrap gap-2">
                     {selectedAnalysis.matched_skills?.map((s, i) => (
-                      <span key={i} className="text-xs bg-green-100 px-2 py-1 rounded">
+                      <span key={i} className="text-xs bg-green-100 dark:bg-green-900/20 text-green-700 dark:text-green-300 px-2 py-1 rounded">
                         {s}
                       </span>
                     ))}
                   </div>
                 </div>
 
-                <div className="bg-white p-6 rounded-xl shadow-sm">
-                  <h3 className="text-red-400 mb-3">Missing Skills</h3>
+                <div className="bg-white dark:bg-app-panel p-6 rounded-xl shadow-sm border border-gray-200 dark:border-app-muted/30">
+                  <h3 className="text-red-400 dark:text-red-300 mb-3">Missing Skills</h3>
                   <div className="flex flex-wrap gap-2">
                     {selectedAnalysis.missing_skills?.map((s, i) => (
-                      <span key={i} className="text-xs bg-red-100 px-2 py-1 rounded">
+                      <span key={i} className="text-xs bg-red-100 dark:bg-red-900/20 text-red-500 dark:text-red-300 px-2 py-1 rounded">
                         {s}
                       </span>
                     ))}
@@ -241,8 +241,8 @@ function HistoryPage() {
                 </div>
               </div>
 
-              <div className="bg-white p-6 rounded-xl shadow-sm mb-6">
-                <h3 className="mb-3">Suggestions</h3>
+              <div className="bg-white dark:bg-app-panel p-6 rounded-xl shadow-sm border border-gray-200 dark:border-app-muted/30 mb-6">
+                <h3 className="mb-3 text-app-text dark:text-app-ivory">Suggestions</h3>
                 <ul className="space-y-2 text-sm text-app-muted">
                   {selectedAnalysis.improvement_suggestions?.map((s, i) => (
                     <li key={i}>• {s}</li>
@@ -250,8 +250,8 @@ function HistoryPage() {
                 </ul>
               </div>
 
-              <div className="bg-white p-6 rounded-xl shadow-sm">
-                <h3 className="mb-3">Suggested Projects</h3>
+              <div className="bg-white dark:bg-app-panel p-6 rounded-xl shadow-sm border border-gray-200 dark:border-app-muted/30">
+                <h3 className="mb-3 text-app-text dark:text-app-ivory">Suggested Projects</h3>
                 <ul className="space-y-2 text-sm text-app-muted">
                   {selectedAnalysis.suggested_projects?.map((p, i) => (
                     <li key={i}>• {p}</li>

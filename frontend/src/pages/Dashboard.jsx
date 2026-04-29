@@ -3,9 +3,10 @@ import { useNavigate } from 'react-router-dom';
 import supabase from '../services/supabase';
 import axios from 'axios';
 import {
-  LayoutDashboard, FileText, History, LogOut, Upload, Briefcase, ChevronRight, ArrowLeft, Menu, X
+  LayoutDashboard, FileText, History, LogOut, Upload, Briefcase, ChevronRight, ArrowLeft, Menu, X, Sun, Moon
 } from 'lucide-react';
 import { ThreeDot } from 'react-loading-indicators';
+import { useDarkMode } from '../hooks/DarkMode';
 
 const API = 'http://127.0.0.1:8000';
 
@@ -32,7 +33,7 @@ function ScoreCircle({ score }) {
           transform="rotate(-90 65 65)"
         />
       </svg>
-      <p className="text-3xl font-bold mt-[-87px] text-app-text">{score}%</p>
+      <p className="text-3xl font-bold mt-[-87px] text-app-text dark:text-app-ivory">{score}%</p>
       <p className="mt-[50px] text-app-muted text-sm font-medium">Match Score</p>
     </div>
   );
@@ -48,6 +49,7 @@ function Avatar({ email }) {
 }
 
 function Dashboard() {
+  const { darkMode, toggleDarkMode } = useDarkMode();
   const [user, setUser] = useState(null);
   const [file, setFile] = useState(null);
   const [jobDescription, setJobDescription] = useState('');
@@ -161,15 +163,15 @@ function Dashboard() {
   ];
 
   return (
-    <div className="min-h-screen flex flex-col md:flex-row bg-app-page text-app-text">
-      <aside className="w-full md:w-64 bg-white border-b md:border-b-0 md:border-r border-gray-200 flex md:flex-col py-4 md:py-6 px-4 md:fixed md:h-full relative">
+    <div className="min-h-screen flex flex-col md:flex-row bg-app-page dark:bg-app-dark text-app-text dark:text-app-ivory">
+      <aside className="w-full md:w-64 bg-white dark:bg-app-panel border-b md:border-b-0 md:border-r border-gray-200 dark:border-app-muted/30 flex md:flex-col py-4 md:py-6 px-4 md:fixed md:h-full relative">
         {/* Mobile top bar */}
         <div className="md:hidden w-full flex items-center justify-between">
           <h1 className="text-xl font-bold">Applify</h1>
           <div className="flex items-center gap-2">
             <button
               onClick={() => setMobileNavOpen((v) => !v)}
-              className="p-2 rounded-lg text-app-muted hover:bg-gray-100 hover:text-app-text transition"
+              className="p-2 rounded-lg text-app-muted hover:bg-gray-100 dark:hover:bg-app-input hover:text-app-text dark:hover:text-app-ivory transition"
               aria-label="Toggle navigation"
             >
               {mobileNavOpen ? <X size={20} /> : <Menu size={20} />}
@@ -187,7 +189,7 @@ function Dashboard() {
         </div>
 
         {/* Mobile dropdown nav */}
-        <div className={`${mobileNavOpen ? 'block' : 'hidden'} md:hidden absolute top-full left-0 right-0 bg-white border-b border-gray-200 shadow-sm z-20 p-3`}>
+        <div className={`${mobileNavOpen ? 'block' : 'hidden'} md:hidden absolute top-full left-0 right-0 bg-white dark:bg-app-panel border-b border-gray-200 dark:border-app-muted/30 shadow-sm z-20 p-3`}>
           <nav className="flex flex-col gap-1">
             {navItems.map(({ id, label, icon: Icon }) => (
               <button
@@ -200,7 +202,7 @@ function Dashboard() {
                 className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition text-left
                   ${activeNav === id
                     ? 'bg-app-brand/10 text-app-brand'
-                    : 'text-app-muted hover:bg-gray-100 hover:text-app-text'
+                    : 'text-app-muted hover:bg-gray-100 dark:hover:bg-app-input hover:text-app-text dark:hover:text-app-ivory'
                   }`}
               >
                 <Icon size={18} />
@@ -211,7 +213,7 @@ function Dashboard() {
         </div>
 
         {/* Desktop nav */}
-        <h1 className="hidden md:block text-2xl font-bold px-2 mb-8">Applify</h1>
+        <h1 className="hidden md:block text-2xl font-bold px-2 mb-8 text-app-text dark:text-app-ivory">Applify</h1>
 
         <nav className="hidden md:flex md:flex-col gap-1 flex-1">
           {navItems.map(({ id, label, icon: Icon }) => (
@@ -224,7 +226,7 @@ function Dashboard() {
               className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition whitespace-nowrap
                 ${activeNav === id
                   ? 'bg-app-brand/10 text-app-brand'
-                  : 'text-app-muted hover:bg-gray-100 hover:text-app-text'
+                  : 'text-app-muted hover:bg-gray-100 dark:hover:bg-app-input hover:text-app-text dark:hover:text-app-ivory'
                 }`}
             >
               <Icon size={18} />
@@ -235,7 +237,7 @@ function Dashboard() {
 
         <button
           onClick={handleLogout}
-          className="hidden md:flex ml-2 md:ml-0 items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-app-muted hover:bg-red-50 hover:text-red-500 transition whitespace-nowrap"
+          className="hidden md:flex ml-2 md:ml-0 items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-app-muted hover:bg-red-50 dark:hover:bg-red-900/20 hover:text-red-500 transition whitespace-nowrap"
         >
           <LogOut size={18} />
           Logout
@@ -243,13 +245,20 @@ function Dashboard() {
       </aside>
 
       <div className="md:ml-64 flex-1 flex flex-col">
-        <header className="bg-white border-b border-gray-200 px-4 sm:px-6 md:px-8 py-4 flex items-center justify-end">
+        <header className="bg-white dark:bg-app-panel border-b border-gray-200 dark:border-app-muted/30 px-4 sm:px-6 md:px-8 py-4 flex items-center justify-end gap-4">
+          <button
+            onClick={toggleDarkMode}
+            className="text-[#9C9A9A] hover:text-[#2C2F2E] dark:hover:text-white transition"
+            aria-label="Toggle dark mode"
+          >
+            {darkMode ? <Sun size={18} /> : <Moon size={18} />}
+          </button>
           {user && <Avatar email={user.email} />}
         </header>
 
         <main className="p-4 sm:p-6 md:p-8 flex-1">
           {error && (
-            <div className="bg-red-50 border border-red-200 text-red-500 text-sm rounded-xl px-4 py-3 mb-6">
+            <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-500/30 text-red-500 text-sm rounded-xl px-4 py-3 mb-6">
               {error}
             </div>
           )}
@@ -261,22 +270,22 @@ function Dashboard() {
                   className={`w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold transition
                     ${step === s || (i === 0 && step !== 'upload') || (i === 1 && step === 'results')
                       ? 'bg-app-brand text-white'
-                      : 'bg-gray-200 text-app-muted'
+                      : 'bg-gray-200 dark:bg-app-input text-app-muted'
                     }`}
                 >
                   {i + 1}
                 </div>
-                <span className={`text-sm font-medium capitalize ${step === s ? 'text-app-text' : 'text-app-muted'}`}>
+                <span className={`text-sm font-medium capitalize ${step === s ? 'text-app-text dark:text-app-ivory' : 'text-app-muted'}`}>
                   {s === 'upload' ? 'Upload Resume' : s === 'analyze' ? 'Job Description' : 'Results'}
                 </span>
-                {i < 2 && <ChevronRight size={16} className="text-gray-300 mx-1" />}
+                {i < 2 && <ChevronRight size={16} className="text-gray-300 dark:text-app-muted mx-1" />}
               </div>
             ))}
           </div>
 
           {step === 'upload' && (
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-5xl">
-              <div className="bg-white rounded-2xl border border-gray-200 p-6 sm:p-8 shadow-sm">
+              <div className="bg-white dark:bg-app-panel rounded-2xl border border-gray-200 dark:border-app-muted/30 p-6 sm:p-8 shadow-sm">
                 <div className="flex items-center gap-3 mb-2">
                   <div className="w-10 h-10 bg-app-brand/10 rounded-xl flex items-center justify-center">
                     <Upload size={20} className="text-app-brand" />
@@ -287,9 +296,9 @@ function Dashboard() {
 
                 <label
                   htmlFor="resume-upload"
-                  className="border-2 border-dashed border-gray-200 hover:border-app-brand rounded-xl p-8 flex flex-col items-center justify-center cursor-pointer transition mb-6 group"
+                  className="border-2 border-dashed border-gray-200 dark:border-app-muted/30 hover:border-app-brand rounded-xl p-8 flex flex-col items-center justify-center cursor-pointer transition mb-6 group"
                 >
-                  <Upload size={28} className="text-gray-300 group-hover:text-app-brand mb-2 transition" />
+                  <Upload size={28} className="text-gray-300 dark:text-app-muted group-hover:text-app-brand mb-2 transition" />
                   <p className="text-app-muted text-sm">Click to upload PDF</p>
                   {file && <p className="text-app-brand text-sm font-medium mt-2">{file.name}</p>}
                   <input
@@ -310,7 +319,7 @@ function Dashboard() {
                 </button>
               </div>
 
-              <div className="bg-white rounded-2xl border border-gray-200 p-6 sm:p-8 shadow-sm">
+              <div className="bg-white dark:bg-app-panel rounded-2xl border border-gray-200 dark:border-app-muted/30 p-6 sm:p-8 shadow-sm">
                 <div className="flex items-center gap-3 mb-2">
                   <div className="w-10 h-10 bg-app-brand/10 rounded-xl flex items-center justify-center">
                     <FileText size={20} className="text-app-brand" />
@@ -320,8 +329,8 @@ function Dashboard() {
                 <p className="text-app-muted text-sm mb-6">Select a previously uploaded resume</p>
 
                 {resumes.length === 0 ? (
-                  <div className="border-2 border-dashed border-gray-200 rounded-xl p-8 flex flex-col items-center justify-center">
-                    <FileText size={28} className="text-gray-300 mb-2" />
+                  <div className="border-2 border-dashed border-gray-200 dark:border-app-muted/30 rounded-xl p-8 flex flex-col items-center justify-center">
+                    <FileText size={28} className="text-gray-300 dark:text-app-muted mb-2" />
                     <p className="text-app-muted text-sm">No saved resumes yet</p>
                   </div>
                 ) : (
@@ -330,11 +339,11 @@ function Dashboard() {
                       <button
                         key={resume.id}
                         onClick={() => { setResumeId(resume.id); setStep('analyze'); }}
-                        className="w-full flex items-center gap-3 px-4 py-3 rounded-xl border border-gray-200 hover:border-app-brand hover:bg-app-brand/5 transition text-left"
+                        className="w-full flex items-center gap-3 px-4 py-3 rounded-xl border border-gray-200 dark:border-app-muted/30 hover:border-app-brand hover:bg-app-brand/5 transition text-left"
                       >
                         <FileText size={16} className="text-app-brand" />
                         <div>
-                          <p className="text-sm font-medium text-app-text">{resume.pdf_path.split('/').pop()}</p>
+                          <p className="text-sm font-medium text-app-text dark:text-app-ivory">{resume.pdf_path.split('/').pop()}</p>
                           <p className="text-xs text-app-muted">{new Date(resume.created_at).toLocaleDateString()}</p>
                         </div>
                       </button>
@@ -347,9 +356,9 @@ function Dashboard() {
 
           {step === 'analyze' && (
             <div className="max-w-2xl">
-              <div className="bg-white rounded-2xl border border-gray-200 p-6 sm:p-8 shadow-sm">
+              <div className="bg-white dark:bg-app-panel rounded-2xl border border-gray-200 dark:border-app-muted/30 p-6 sm:p-8 shadow-sm">
                 <div className="flex items-center gap-3 mb-2">
-                  <button onClick={() => setStep('upload')} className="text-app-muted hover:text-app-text transition">
+                  <button onClick={() => setStep('upload')} className="text-app-muted hover:text-app-text dark:hover:text-app-ivory transition">
                     <ArrowLeft size={20} />
                   </button>
                   <div className="w-10 h-10 bg-app-brand/10 rounded-xl flex items-center justify-center">
@@ -364,7 +373,7 @@ function Dashboard() {
                   placeholder="Paste job description here..."
                   value={jobDescription}
                   onChange={(e) => setJobDescription(e.target.value)}
-                  className="w-full border border-gray-200 rounded-xl px-4 py-3 text-app-text bg-app-page placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-app-brand transition resize-none mb-6 text-sm"
+                  className="w-full border border-gray-200 dark:border-app-muted/30 rounded-xl px-4 py-3 text-app-text dark:text-app-ivory bg-app-page dark:bg-app-input placeholder-gray-300 dark:placeholder-app-muted focus:outline-none focus:ring-2 focus:ring-app-brand transition resize-none mb-6 text-sm"
                 />
 
                 <button
@@ -381,18 +390,18 @@ function Dashboard() {
           {step === 'results' && analysis && (
             <div className="grid grid-cols-1 gap-6 max-w-3xl">
               <div className="flex justify-end mb-2">
-                <button onClick={() => setStep('analyze')} className="text-app-muted hover:text-app-text transition">
+                <button onClick={() => setStep('analyze')} className="text-app-muted hover:text-app-text dark:hover:text-app-ivory transition">
                   <ArrowLeft size={20} />
                 </button>
               </div>
 
-              <div className="bg-white rounded-2xl border border-gray-200 p-8 shadow-sm flex flex-col items-center">
+              <div className="bg-white dark:bg-app-panel rounded-2xl border border-gray-200 dark:border-app-muted/30 p-8 shadow-sm flex flex-col items-center">
                 <ScoreCircle score={Math.round(analysis.match_score)} />
                 <p className="text-app-muted text-sm mt-4 text-center max-w-md">{analysis.overall_summary}</p>
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div className="bg-white rounded-2xl border border-gray-200 p-6 shadow-sm">
+                <div className="bg-white dark:bg-app-panel rounded-2xl border border-gray-200 dark:border-app-muted/30 p-6 shadow-sm">
                   <h3 className="font-semibold text-app-brand mb-4 text-sm">✓ Matched Skills</h3>
                   <div className="flex flex-wrap gap-2">
                     {analysis.matched_skills.map((skill, i) => (
@@ -403,7 +412,7 @@ function Dashboard() {
                   </div>
                 </div>
 
-                <div className="bg-white rounded-2xl border border-gray-200 p-6 shadow-sm">
+                <div className="bg-white dark:bg-app-panel rounded-2xl border border-gray-200 dark:border-app-muted/30 p-6 shadow-sm">
                   <h3 className="font-semibold text-red-400 mb-4 text-sm">✗ Missing Skills</h3>
                   <div className="flex flex-wrap gap-2">
                     {analysis.missing_skills.map((skill, i) => (
@@ -415,8 +424,8 @@ function Dashboard() {
                 </div>
               </div>
 
-              <div className="bg-white rounded-2xl border border-gray-200 p-6 shadow-sm">
-                <h3 className="font-semibold text-app-text mb-4 text-sm">Improvement Suggestions</h3>
+              <div className="bg-white dark:bg-app-panel rounded-2xl border border-gray-200 dark:border-app-muted/30 p-6 shadow-sm">
+                <h3 className="font-semibold text-app-text dark:text-app-ivory mb-4 text-sm">Improvement Suggestions</h3>
                 <ul className="space-y-3">
                   {analysis.improvement_suggestions.map((suggestion, i) => (
                     <li key={i} className="flex gap-3 text-sm text-app-muted">
@@ -427,8 +436,8 @@ function Dashboard() {
                 </ul>
               </div>
 
-              <div className="bg-white rounded-2xl border border-gray-200 p-6 shadow-sm">
-                <h3 className="font-semibold text-app-text mb-4 text-sm">Suggested Projects to Build</h3>
+              <div className="bg-white dark:bg-app-panel rounded-2xl border border-gray-200 dark:border-app-muted/30 p-6 shadow-sm">
+                <h3 className="font-semibold text-app-text dark:text-app-ivory mb-4 text-sm">Suggested Projects to Build</h3>
                 <ul className="space-y-3">
                   {analysis.suggested_projects.map((project, i) => (
                     <li key={i} className="flex gap-3 text-sm text-app-muted">
@@ -448,7 +457,7 @@ function Dashboard() {
               </button>
 
               <button
-                className="w-full border border-gray-200 text-app-muted hover:text-app-text hover:border-gray-300 font-semibold py-3 rounded-xl transition text-sm"
+                className="w-full border border-gray-200 dark:border-app-muted/30 text-app-muted hover:text-app-text dark:hover:text-app-ivory hover:border-gray-300 dark:hover:border-app-muted font-semibold py-3 rounded-xl transition text-sm"
                 onClick={() => {
                   setStep('upload');
                   setAnalysis(null);
