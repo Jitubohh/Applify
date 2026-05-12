@@ -53,6 +53,7 @@ function Dashboard() {
   const [user, setUser] = useState(null);
   const [file, setFile] = useState(null);
   const [jobDescription, setJobDescription] = useState('');
+  const [jobTitle, setJobTitle] = useState('');
   const [resumeId, setResumeId] = useState(null);
   const [analysisId, setAnalysisId] = useState(null);
   const [resumes, setResumes] = useState([]);
@@ -132,13 +133,14 @@ function Dashboard() {
 
   const handleAnalysis = async () => {
     if (!jobDescription) return setError('Please enter a job description');
+    if (!jobTitle) return setError('Please enter a job title');
     setLoading(true);
     setError('');
     try {
       const token = await getToken();
       const res = await axios.post(
         `${API}/analysis/submit`,
-        { resume_id: resumeId, job_description: jobDescription },
+        { resume_id: resumeId, job_description: jobDescription, job_title: jobTitle },
         { headers: { Authorization: `Bearer ${token}` } }
       );
       setAnalysis(res.data.data[0].analysis_json);
@@ -367,7 +369,14 @@ function Dashboard() {
                   <h2 className="text-lg font-semibold">Paste Job Description</h2>
                 </div>
                 <p className="text-app-muted text-sm mb-6">Paste the job description you want to apply for</p>
-
+                
+                <input
+                  type="text"
+                  placeholder="Enter job title..."
+                  value={jobTitle}
+                  onChange={(e) => setJobTitle(e.target.value)}
+                  className="w-full border border-gray-200 dark:border-app-muted/30 rounded-xl px-4 py-3 text-app-text dark:text-app-ivory bg-app-page dark:bg-app-input placeholder-gray-300 dark:placeholder-app-muted focus:outline-none focus:ring-2 focus:ring-app-brand transition resize-none mb-6 text-sm"
+                />
                 <textarea
                   rows={8}
                   placeholder="Paste job description here..."

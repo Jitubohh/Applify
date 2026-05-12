@@ -7,8 +7,8 @@ from db.supabase_client import get_supabase_client
 analysis_router = APIRouter()
 
 @analysis_router.post("/submit")
-def submit_analysis(job_description: str = Body(...), resume_id: str = Body(...), user = Depends(verify_token)):
-    result = create_analysis(user["sub"], resume_id, job_description)
+def submit_analysis(job_description: str = Body(...), job_title: str = Body(...), resume_id: str = Body(...), user = Depends(verify_token)):
+    result = create_analysis(user["sub"], resume_id, job_description, job_title)
     return result
 
 @analysis_router.get("/my-analyses")

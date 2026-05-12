@@ -6,6 +6,7 @@ from langchain_core.prompts import ChatPromptTemplate # type: ignore
 from langchain_core.runnables.passthrough import RunnableAssign # type: ignore
 from langchain_core.output_parsers import PydanticOutputParser # type: ignore
 from langchain_core.output_parsers import StrOutputParser # type: ignore
+from services.Knowledge_base import search_knowledge_base # type: ignore
 
 llm = ChatNVIDIA(model="meta/llama-3.3-70b-instruct", nvidia_api_key=settings.NVIDIA_API_KEY)
 
@@ -18,7 +19,11 @@ prompt = ChatPromptTemplate.from_messages([
     "\n\n{format_instructions}. Follow the format precisely, including quotations and commas"
     "do not make assumptions or add information that is not explicitly stated in the resume data or job description. If certain sections of the analysis are missing, leave them blank or empty. " \
     "Always return the output in the specified structured format and ensure it adheres to the Pydantic model provided"),
-    ("user", "{resume_data} {job_description}")
+    (
+     "user", "Resume data: {resume_data}\n\n"
+     "Job description: {job_description}\n\n"
+     "Similar Job Market Context (use this to make recommendations more accurate and market-grounded): {market_context}"
+     )
 ])
 
 def fill_analysis(pydantic_class, llm, prompt):
@@ -37,6 +42,8 @@ def fill_analysis(pydantic_class, llm, prompt):
         return string
     return instruct_merge | prompt | llm | StrOutputParser() | preparse | parser
 
-def run_analysis(resume_data: str, job_description: str):
+def run_analysis(resume_data: str, job_description: str, job_title: str):
+    market_context = search_knowledge_base(job_title, k=5)
+    market_context_string = "\n\n".join(market_context)
     chain = fill_analysis(Analysis, llm, prompt)
-    return chain.invoke({"resume_data": resume_data, "job_description": job_description})
+    return chain.invoke({"resume_data": resume_data, "job_description": job_description, "market_context": market_context_string})
