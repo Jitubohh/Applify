@@ -1,0 +1,69 @@
+\documentclass[letterpaper,11pt]{article}
+
+\usepackage[margin=0.75in]{geometry}
+\usepackage{enumitem}
+\usepackage[hidelinks]{hyperref}
+\usepackage{xcolor}
+\usepackage{titlesec}
+\usepackage{microtype}
+
+\definecolor{darkgray}{RGB}{50,50,50}
+\definecolor{medgray}{RGB}{120,120,120}
+\color{darkgray}
+\pagenumbering{gobble}
+\raggedbottom
+\raggedright
+
+\titleformat{\section}{\large\scshape\color{darkgray}}{}{0em}{}[\rule{\linewidth}{0.4pt}]
+\titlespacing*{\section}{0pt}{0.9em plus 0.2em minus 0.1em}{0.7em plus 0.2em}
+
+\newcommand{\resumeItem}[1]{\item\small{#1\vspace{-2pt}}}
+\newcommand{\resumeItemListStart}{\begin{itemize}[leftmargin=*,topsep=2pt,itemsep=1pt]}
+\newcommand{\resumeItemListEnd}{\end{itemize}\vspace{2pt}}
+
+% ============================================================
+% EXECUTIVE TEMPLATE - Elegant minimal for senior roles
+% Fill all sections with resume data
+% Apply all improvements from analysis
+% ============================================================
+
+\begin{document}
+
+% HEADING
+\begin{center}
+  {\LARGE\scshape\bfseries CANDIDATE NAME} \\ \vspace{6pt}
+  {\color{medgray}\small LOCATION $\cdot$ EMAIL $\cdot$ PHONE} \\ \vspace{2pt}
+  {\color{medgray}\small \href{LINKEDIN}{\underline{LinkedIn}} $\cdot$ \href{GITHUB}{\underline{GitHub}}}
+\end{center}
+
+\vspace{8pt}
+
+% EXECUTIVE SUMMARY
+\section{Executive Summary}
+\small SUMMARY
+
+% PROFESSIONAL EXPERIENCE
+\section{Professional Experience}
+\textbf{ROLE} \hfill \textit{DURATION} \\
+{\small\scshape COMPANY} $\cdot$ \small LOCATION \vspace{4pt}
+\resumeItemListStart
+  \resumeItem{RESPONSIBILITY}
+\resumeItemListEnd
+
+% EDUCATION
+\section{Education}
+\textbf{DEGREE} \hfill GRADUATION DATE \\
+{\small\scshape INSTITUTION} $\cdot$ LOCATION
+
+% CORE COMPETENCIES
+\section{Core Competencies}
+\small LIST ALL SKILLS SEPARATED BY $\cdot$
+
+% KEY PROJECTS
+\section{Key Projects}
+\textbf{PROJECT NAME} $|$ \textit{TECHNOLOGIES} \hfill DATE
+\resumeItemListStart
+  \resumeItem{DESCRIPTION}
+\resumeItemListEnd
+
+\end{document}

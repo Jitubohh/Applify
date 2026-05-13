@@ -1,0 +1,69 @@
+\documentclass[letterpaper,10pt]{article}
+
+\usepackage[margin=0.6in]{geometry}
+\usepackage{enumitem}
+\usepackage[hidelinks]{hyperref}
+\usepackage{xcolor}
+\usepackage{titlesec}
+
+\definecolor{lightgray}{RGB}{180,180,180}
+\pagenumbering{gobble}
+\raggedbottom
+\raggedright
+\setlength{\parskip}{0pt}
+
+\titleformat{\section}{\small\bfseries\uppercase}{}{0em}{}[\color{lightgray}\rule{\linewidth}{0.3pt}]
+\titlespacing*{\section}{0pt}{0.9em plus 0.2em minus 0.1em}{0.7em plus 0.2em}
+
+\newcommand{\resumeItem}[1]{\item\small{#1\vspace{-2pt}}}
+\newcommand{\resumeItemListStart}{\begin{itemize}[leftmargin=*,topsep=0pt,itemsep=0pt]}
+\newcommand{\resumeItemListEnd}{\end{itemize}\vspace{2pt}}
+
+% ============================================================
+% MINIMAL TEMPLATE - Ultra clean for startups
+% Fill all sections with resume data
+% Apply all improvements from analysis
+% ============================================================
+
+\begin{document}
+
+% HEADING
+{\LARGE CANDIDATE NAME} \hfill \small EMAIL \\
+\small LOCATION \hfill PHONE \\
+\small \href{LINKEDIN}{\underline{LinkedIn}} $|$ \href{GITHUB}{\underline{GitHub}}
+
+\vspace{8pt}
+\color{lightgray}\rule{\linewidth}{0.3pt}
+\color{black}
+\vspace{4pt}
+
+% SUMMARY
+SUMMARY
+
+\vspace{6pt}
+
+% EXPERIENCE
+\section{Experience}
+\textbf{ROLE} \hfill DURATION \\
+\small\textit{COMPANY, LOCATION}
+\resumeItemListStart
+  \resumeItem{RESPONSIBILITY}
+\resumeItemListEnd
+
+% EDUCATION
+\section{Education}
+\textbf{INSTITUTION} \hfill GRADUATION DATE \\
+\small DEGREE
+
+% SKILLS
+\section{Skills}
+\small LIST ALL SKILLS
+
+% PROJECTS
+\section{Projects}
+\textbf{PROJECT NAME} $|$ \small\textit{TECHNOLOGIES} \hfill DATE
+\resumeItemListStart
+  \resumeItem{DESCRIPTION}
+\resumeItemListEnd
+
+\end{document}

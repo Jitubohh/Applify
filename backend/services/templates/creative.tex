@@ -1,0 +1,77 @@
+\documentclass[letterpaper,10pt]{article}
+
+\usepackage[margin=0.5in]{geometry}
+\usepackage{enumitem}
+\usepackage[hidelinks]{hyperref}
+\usepackage{xcolor}
+\usepackage{titlesec}
+\usepackage{graphicx}
+\usepackage{tikz}
+
+\definecolor{accentorange}{RGB}{230, 100, 50}
+\definecolor{darkbg}{RGB}{35,35,35}
+\definecolor{lighttext}{RGB}{245,245,245}
+\pagenumbering{gobble}
+\raggedbottom
+
+\titleformat{\section}{\color{accentorange}\bfseries\large}{}{0em}{}[\color{accentorange}\rule{\linewidth}{1pt}]
+\titlespacing*{\section}{0pt}{0.9em plus 0.2em minus 0.1em}{0.7em plus 0.2em}
+
+\newcommand{\resumeItem}[1]{\item\small{#1\vspace{-2pt}}}
+\newcommand{\resumeItemListStart}{\begin{itemize}[leftmargin=*,topsep=0pt]}
+\newcommand{\resumeItemListEnd}{\end{itemize}\vspace{2pt}}
+
+% ============================================================
+% CREATIVE TEMPLATE - Bold header for design/marketing roles
+% Fill all sections with resume data
+% Apply all improvements from analysis
+% ============================================================
+
+\begin{document}
+
+% BOLD HEADER
+\noindent\colorbox{darkbg}{%
+  \parbox{\dimexpr\linewidth}{%
+    \vspace{8pt}
+    \begin{center}
+      {\Huge\bfseries\color{lighttext} CANDIDATE NAME} \\ \vspace{4pt}
+      {\color{accentorange}\large ROLE/TITLE} \\ \vspace{4pt}
+      {\small\color{lighttext} EMAIL $|$ PHONE $|$ LOCATION $|$
+      \href{LINKEDIN}{\underline{\color{lighttext}LinkedIn}} $|$
+      \href{GITHUB}{\underline{\color{lighttext}GitHub}}}
+    \end{center}
+    \vspace{8pt}
+  }%
+}
+
+\vspace{8pt}
+
+% ABOUT
+\section{About Me}
+SUMMARY
+
+% EXPERIENCE
+\section{Experience}
+\textbf{ROLE} \hfill \textit{DURATION} \\
+\textit{COMPANY, LOCATION}
+\resumeItemListStart
+  \resumeItem{RESPONSIBILITY}
+\resumeItemListEnd
+
+% PROJECTS
+\section{Projects}
+\textbf{PROJECT NAME} $|$ \textit{TECHNOLOGIES} \hfill DATE
+\resumeItemListStart
+  \resumeItem{DESCRIPTION}
+\resumeItemListEnd
+
+% SKILLS
+\section{Skills \& Tools}
+\small LIST ALL SKILLS
+
+% EDUCATION
+\section{Education}
+\textbf{INSTITUTION} \hfill GRADUATION DATE \\
+\textit{DEGREE}
+
+\end{document}

@@ -48,11 +48,49 @@ function Avatar({ email }) {
   );
 }
 
+const templates = [
+  { id: 'classic', name: 'Classic', description: 'Clean single column, traditional, works for any industry' },
+  { id: 'modern', name: 'Modern', description: 'Two column with skills sidebar, great for tech roles' },
+  { id: 'executive', name: 'Executive', description: 'Elegant and minimal, perfect for senior roles' },
+  { id: 'creative', name: 'Creative', description: 'Bold header with accent colors, ideal for design and marketing' },
+  { id: 'academic', name: 'Academic', description: 'Publication focused, built for research and academia' },
+  { id: 'minimal', name: 'Minimal', description: 'Ultra clean with maximum whitespace, great for startups' },
+];
+
+function TemplateModal({ onSelect, onClose }) {
+  return (
+    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+      <div className="bg-white rounded-2xl p-8 shadow-2xl w-full max-w-2xl mx-4">
+        <div className="flex items-center justify-between mb-6">
+          <h2 className="text-xl font-semibold text-[#2C2F2E]">Choose a Template</h2>
+          <button onClick={onClose} className="text-[#9C9A9A] hover:text-[#2C2F2E] transition">
+            ✕
+          </button>
+        </div>
+        <div className="grid grid-cols-2 gap-4">
+          {templates.map((template) => (
+            <button
+              key={template.id}
+              onClick={() => onSelect(template.id)}
+              className="text-left p-4 rounded-xl border border-gray-200 hover:border-[#4A7C59] hover:bg-[#4A7C59]/5 transition"
+            >
+              <p className="font-semibold text-[#2C2F2E] mb-1">{template.name}</p>
+              <p className="text-xs text-[#9C9A9A]">{template.description}</p>
+            </button>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
 function Dashboard() {
   const { darkMode, toggleDarkMode } = useDarkMode();
   const [user, setUser] = useState(null);
   const [file, setFile] = useState(null);
   const [jobDescription, setJobDescription] = useState('');
+  const [showTemplateModal, setShowTemplateModal] = useState(false);
+  const [selectedTemplate, setSelectedTemplate] = useState(null);
   const [jobTitle, setJobTitle] = useState('');
   const [resumeId, setResumeId] = useState(null);
   const [analysisId, setAnalysisId] = useState(null);
@@ -107,14 +145,14 @@ function Dashboard() {
     setResumes(res.data.data);
   };
 
-  const handleResumeUpgrade = async () => {
+  const handleResumeUpgrade = async (templateId) => {
     try {
       setLoading(true);
       const token = await getToken();
       const res = await axios.post(
         `${API}/upgrade/fit-resume`,
-        { resume_id: resumeId, analysis_id: analysisId },
-        { headers: { Authorization: `Bearer ${token}` }, responseType: 'blob' }
+        { resume_id: resumeId, analysis_id: analysisId, resume_template: templateId },
+        { headers: { Authorization: `Bearer ${token}` }, responseType: 'blob', timeout: 120000 }
       );
 
       const url = window.URL.createObjectURL(new Blob([res.data]));
@@ -369,7 +407,7 @@ function Dashboard() {
                   <h2 className="text-lg font-semibold">Paste Job Description</h2>
                 </div>
                 <p className="text-app-muted text-sm mb-6">Paste the job description you want to apply for</p>
-                
+
                 <input
                   type="text"
                   placeholder="Enter job title..."
@@ -459,7 +497,7 @@ function Dashboard() {
 
               <button
                 className="w-full bg-app-brand hover:bg-app-brand-hover text-white font-semibold py-3 rounded-xl transition text-base"
-                onClick={handleResumeUpgrade}
+                onClick={() => setShowTemplateModal(true)}
                 disabled={loading}
               >
                 {loading ? <ThreeDot variant="brick-stack" color="white" size="small" /> : 'Fit Resume to Job Description'}
@@ -482,6 +520,16 @@ function Dashboard() {
           )}
         </main>
       </div>
+
+      {showTemplateModal && (
+        <TemplateModal
+          onClose={() => setShowTemplateModal(false)}
+          onSelect={(templateId) => {
+            setShowTemplateModal(false);
+            handleResumeUpgrade(templateId);
+          }}
+        />
+      )}
     </div>
   );
 }
