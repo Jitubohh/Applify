@@ -2,6 +2,7 @@ import supabase from '../services/supabase';
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import bgImg from '../assets/bg-img.png';
+import Loading from '../components/loading';
 
 function Register() {
   const [email, setEmail] = useState('');
@@ -82,9 +83,13 @@ function Register() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-app-brand hover:bg-app-brand-hover text-white font-semibold py-2.5 rounded-lg transition mt-2"
+              className="w-full bg-app-brand hover:bg-app-brand-hover text-white font-semibold py-2.5 rounded-lg transition mt-2 inline-flex items-center justify-center"
             >
-              {loading ? 'Signing up...' : 'Sign up'}
+              {loading ? (
+                <Loading compact messages={['Creating your account...', 'Setting up your workspace...', 'Getting everything ready...']} />
+              ) : (
+                'Sign up'
+              )}
             </button>
           </form>
 

@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import supabase from '../services/supabase';
-import {ThreeDot} from 'react-loading-indicators'
+import Loading from './loading';
 
 function ProtectedRoute({ children }) {
   const [loading, setLoading] = useState(true);
@@ -15,8 +15,16 @@ function ProtectedRoute({ children }) {
   }, []);
 
   if (loading) return (
-    <div className="min-h-screen flex items-center justify-center bg-[#F0F2F5]">
-      <ThreeDot variant="brick-stack" color="black" size="small"/>
+    <div className="min-h-screen flex items-center justify-center bg-[#F0F2F5] px-4">
+      <div className="rounded-2xl border border-black/10 bg-white/80 shadow-lg px-5 py-4 text-[#2C2F2E]">
+        <Loading
+          messages={[
+            'Verifying your session...',
+            'Checking access permissions...',
+            'Opening your workspace...'
+          ]}
+        />
+      </div>
     </div>
   );
 

@@ -24,8 +24,7 @@
 \raggedright
 \setlength{\tabcolsep}{0in}
 
-\titleformat{\section}{\scshape\raggedright\large}{}{0em}{}[\color{black}\titlerule]
-\titlespacing*{\section}{0pt}{0.9em plus 0.2em minus 0.1em}{0.7em plus 0.2em}
+\titleformat{\section}{\vspace{-4pt}\scshape\raggedright\large}{}{0em}{}[\color{black}\titlerule\vspace{-5pt}]
 
 \newcommand{\resumeItem}[1]{\item\small{#1\vspace{-2pt}}}
 \newcommand{\resumeSubheading}[4]{
@@ -42,19 +41,18 @@
   \end{tabular*}\vspace{-7pt}
 }
 \newcommand{\resumeItemListStart}{\begin{itemize}[leftmargin=*]}
-\newcommand{\resumeItemListEnd}{\end{itemize}\vspace{2pt}}
+\newcommand{\resumeItemListEnd}{\end{itemize}\vspace{-5pt}}
 \newcommand{\resumeSubHeadingListStart}{\begin{itemize}[leftmargin=0.15in,label={}]}
 \newcommand{\resumeSubHeadingListEnd}{\end{itemize}}
 
 % ============================================================
-% CLASSIC TEMPLATE - Fill all sections with resume data
-% Apply all improvements from analysis
-% Keep to one page
+% CLASSIC TEMPLATE
+% Fill ALL sections with resume data - omit section only if empty
+% Apply all improvements from analysis - do not truncate content
 % ============================================================
 
 \begin{document}
 
-% HEADING - name, location, email, phone, linkedin, github
 \begin{center}
   {\Huge\scshape CANDIDATE NAME} \\ \vspace{4pt}
   LOCATION \\ \vspace{2pt}
@@ -63,11 +61,9 @@
   \href{GITHUB}{\underline{GitHub}}
 \end{center}
 
-% SUMMARY
 \section{Professional Summary}
 SUMMARY
 
-% EXPERIENCE
 \section{Experience}
 \resumeSubHeadingListStart
   \resumeSubheading{ROLE}{DURATION}{COMPANY}{LOCATION}
@@ -76,19 +72,14 @@ SUMMARY
   \resumeItemListEnd
 \resumeSubHeadingListEnd
 
-% EDUCATION
 \section{Education}
 \resumeSubHeadingListStart
   \resumeSubheading{INSTITUTION}{LOCATION}{DEGREE}{GRADUATION DATE}
+  \resumeItemListStart
+    \resumeItem{GPA: GPA}
+  \resumeItemListEnd
 \resumeSubHeadingListEnd
 
-% SKILLS
-\section{Skills}
-\begin{itemize}[leftmargin=0.15in,label={}]
-  \small\item{\textbf{Skills: } LIST ALL SKILLS}
-\end{itemize}
-
-% PROJECTS
 \section{Projects}
 \resumeSubHeadingListStart
   \resumeProjectHeading{\textbf{PROJECT NAME} $|$ \emph{TECHNOLOGIES}}{DATE}
@@ -96,5 +87,33 @@ SUMMARY
     \resumeItem{DESCRIPTION}
   \resumeItemListEnd
 \resumeSubHeadingListEnd
+
+\section{Technical Skills}
+\begin{itemize}[leftmargin=0.15in,label={}]
+  \small\item{\textbf{Skills: } LIST ALL SKILLS}
+\end{itemize}
+
+\section{Certifications}
+\resumeSubHeadingListStart
+  \resumeItem{CERTIFICATION NAME, ISSUER, DATE}
+\resumeSubHeadingListEnd
+
+\section{Volunteer Work}
+\resumeSubHeadingListStart
+  \resumeSubheading{ROLE}{DURATION}{ORGANIZATION}{}
+  \resumeItemListStart
+    \resumeItem{DESCRIPTION}
+  \resumeItemListEnd
+\resumeSubHeadingListEnd
+
+\section{Awards}
+\begin{itemize}[leftmargin=0.15in,label={}]
+  \small\item{LIST ALL AWARDS}
+\end{itemize}
+
+\section{Publications}
+\begin{itemize}[leftmargin=0.15in,label={}]
+  \small\item{TITLE. \textit{PUBLISHER}, DATE.}
+\end{itemize}
 
 \end{document}

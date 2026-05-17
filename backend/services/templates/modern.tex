@@ -5,10 +5,8 @@
 \usepackage[hidelinks]{hyperref}
 \usepackage{xcolor}
 \usepackage{titlesec}
-\usepackage{multicol}
-\usepackage{array}
 
-\definecolor{accentblue}{RGB}{41, 98, 255}
+\definecolor{accentblue}{RGB}{41,98,255}
 \pagecolor{white}
 \raggedbottom
 \raggedright
@@ -16,21 +14,19 @@
 \setlength{\tabcolsep}{0in}
 
 \titleformat{\section}{\color{accentblue}\large\bfseries}{}{0em}{}[\color{accentblue}\titlerule]
-\titlespacing*{\section}{0pt}{0.9em plus 0.2em minus 0.1em}{0.7em plus 0.2em}
 
 \newcommand{\resumeItem}[1]{\item\small{#1\vspace{-2pt}}}
 \newcommand{\resumeItemListStart}{\begin{itemize}[leftmargin=*,topsep=0pt]}
-\newcommand{\resumeItemListEnd}{\end{itemize}\vspace{2pt}}
+\newcommand{\resumeItemListEnd}{\end{itemize}\vspace{-4pt}}
 
 % ============================================================
-% MODERN TEMPLATE - Two column layout with accent color
-% Fill all sections with resume data
-% Apply all improvements from analysis
+% MODERN TEMPLATE
+% Fill ALL sections with resume data - omit section only if empty
+% Apply all improvements from analysis - do not truncate content
 % ============================================================
 
 \begin{document}
 
-% HEADER
 \begin{center}
   {\Huge\bfseries CANDIDATE NAME} \\ \vspace{4pt}
   {\color{accentblue} ROLE/TITLE} \\ \vspace{4pt}
@@ -43,10 +39,8 @@
 \noindent\color{accentblue}\rule{\linewidth}{1.5pt}
 \vspace{4pt}
 
-% TWO COLUMN LAYOUT
 \begin{minipage}[t]{0.63\textwidth}
 
-% EXPERIENCE
 \section{Experience}
 \textbf{ROLE} \hfill DURATION \\
 \textit{COMPANY, LOCATION}
@@ -54,34 +48,49 @@
   \resumeItem{RESPONSIBILITY}
 \resumeItemListEnd
 
-% PROJECTS
 \section{Projects}
 \textbf{PROJECT NAME} $|$ \textit{TECHNOLOGIES} \hfill DATE
 \resumeItemListStart
   \resumeItem{DESCRIPTION}
 \resumeItemListEnd
 
+\section{Volunteer Work}
+\textbf{ORGANIZATION} \hfill DURATION \\
+\textit{ROLE}
+\resumeItemListStart
+  \resumeItem{DESCRIPTION}
+\resumeItemListEnd
+
+\section{Publications}
+\resumeItemListStart
+  \resumeItem{TITLE. \textit{PUBLISHER}, DATE.}
+\resumeItemListEnd
+
 \end{minipage}
 \hfill
 \begin{minipage}[t]{0.33\textwidth}
 
-% SUMMARY
 \section{About}
 \small SUMMARY
 
-% SKILLS
 \section{Skills}
 \small LIST ALL SKILLS COMMA SEPARATED
 
-% EDUCATION
 \section{Education}
 \textbf{INSTITUTION} \\
 \small DEGREE \\
+\small FIELD OF STUDY \\
+\small GPA: GPA \\
 \small GRADUATION DATE
 
-% CERTIFICATIONS
 \section{Certifications}
-\small LIST CERTIFICATIONS
+\small LIST ALL CERTIFICATIONS
+
+\section{Awards}
+\small LIST ALL AWARDS
+
+\section{Languages}
+\small LIST ALL LANGUAGES
 
 \end{minipage}
 

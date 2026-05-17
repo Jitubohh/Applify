@@ -1,6 +1,6 @@
 # Pydantic models for resume data
 from typing import List, Optional
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, ConfigDict
 
 
 class Education(BaseModel):
@@ -37,8 +37,18 @@ class Publication(BaseModel):
     publisher: Optional[str] = Field("", description = "Publisher of the publication")
     date: Optional[str] = Field("", description = "Publication date")
 
+
+class AdditionalSection(BaseModel):
+    heading: str = Field("", description="Section heading from the resume")
+    text: Optional[str] = Field("", description="Free-form section content")
+    items: List[str] = Field(default_factory=list, description="Bullet items for the section")
+
+
 class Resume(BaseModel):
+    model_config = ConfigDict(extra="allow")
+
     name: str = Field("", description = "Full name of the candidate")
+    headline: Optional[str] = Field("", description = "Target title, headline, or role summary")
     email: str = Field("", description = "Email address of the candidate")
     phone: Optional[str] = Field("", description = "Phone number of the candidate")
     location: str = Field("", description = "Location of the candidate")
@@ -46,30 +56,32 @@ class Resume(BaseModel):
     github: Optional[str] = Field("", description = "GitHub profile URL")
     website: Optional[str] = Field("", description = "Personal website URL")
     summary: Optional[str] = Field("", description = "Summary of the candidate's background and goals")
+    objective: Optional[str] = Field("", description = "Career objective or profile objective")
+    professional_summary: Optional[str] = Field("", description = "Professional summary section")
+    profile: Optional[str] = Field("", description = "Profile section text")
+    about: Optional[str] = Field("", description = "About section text")
     
-    skills: List[str] = Field([], description = "List of skills possessed by the candidate")
-    experience: List[Experience] = Field([], description = "List of work experiences")
-    projects: Optional[List[Project]] = Field([], description = "List of projects undertaken by the candidate")
-    education: List[Education] = Field([], description = "List of educational qualifications")
-    certifications: List[Certification] = Field([], description = "List of certifications obtained")
-    volunteer_work: Optional[List[VolunteerWork]] = Field([], description = "List of volunteer work experiences")
-    awards: Optional[List[str]] = Field([], description = "List of awards and honors received")
-    languages: Optional[List[str]] = Field([], description = "List of languages spoken by the candidate")
-    publications: Optional[List[Publication]] = Field([], description = "List of publications authored by the candidate")
-
-class Resume(BaseModel):
-    name: str
-    email: str
-    location: str
-    linkedin: Optional[str] = ""
-    github: Optional[str] = ""
-    website: Optional[str] = ""
-    summary: Optional[str] = ""
-    skills: List[str]
-    experience: List[Experience]
-    education: List[Education]
-    certifications: Optional[List[Certification]] = []
-    volunteer_work: Optional[List[VolunteerWork]] = []
-    awards: Optional[List[str]] = []
-    languages: Optional[List[str]] = []
-    publications: Optional[List[Publication]] = []
+    skills: List[str] = Field(default_factory=list, description = "List of skills possessed by the candidate")
+    technical_skills: List[str] = Field(default_factory=list, description = "Technical skills section")
+    core_competencies: List[str] = Field(default_factory=list, description = "Core competencies or strengths")
+    tools: List[str] = Field(default_factory=list, description = "Tools, frameworks, or software")
+    experience: List[Experience] = Field(default_factory=list, description = "List of work experiences")
+    work_experience: List[Experience] = Field(default_factory=list, description = "Work experience section")
+    professional_experience: List[Experience] = Field(default_factory=list, description = "Professional experience section")
+    projects: List[Project] = Field(default_factory=list, description = "List of projects undertaken by the candidate")
+    selected_projects: List[Project] = Field(default_factory=list, description = "Selected projects section")
+    education: List[Education] = Field(default_factory=list, description = "List of educational qualifications")
+    certifications: List[Certification] = Field(default_factory=list, description = "List of certifications obtained")
+    volunteer_work: List[VolunteerWork] = Field(default_factory=list, description = "List of volunteer work experiences")
+    volunteer_experience: List[VolunteerWork] = Field(default_factory=list, description = "Volunteer experience section")
+    awards: List[str] = Field(default_factory=list, description = "List of awards and honors received")
+    honors: List[str] = Field(default_factory=list, description = "List of honors received")
+    achievements: List[str] = Field(default_factory=list, description = "List of achievements")
+    languages: List[str] = Field(default_factory=list, description = "List of languages spoken by the candidate")
+    interests: List[str] = Field(default_factory=list, description = "List of interests or hobbies")
+    coursework: List[str] = Field(default_factory=list, description = "Relevant coursework")
+    patents: List[str] = Field(default_factory=list, description = "Patents or patent applications")
+    leadership: List[str] = Field(default_factory=list, description = "Leadership roles or leadership highlights")
+    publications: List[Publication] = Field(default_factory=list, description = "List of publications authored by the candidate")
+    references: List[str] = Field(default_factory=list, description = "References or referees")
+    additional_sections: List[AdditionalSection] = Field(default_factory=list, description = "Any other resume sections not covered above")

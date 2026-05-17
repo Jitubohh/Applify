@@ -11,6 +11,8 @@ import {
   Menu,
   X
 } from 'lucide-react';
+import Loading from '../components/loading';
+import logo from '../assets/logo.svg';
 
 const API = 'http://127.0.0.1:8000';
 
@@ -100,7 +102,10 @@ function HistoryPage() {
     <div className="min-h-screen flex flex-col md:flex-row bg-app-page dark:bg-app-dark text-app-text dark:text-app-ivory">
       <aside className="w-full md:w-64 bg-white dark:bg-app-panel border-b md:border-b-0 md:border-r border-gray-200 dark:border-app-muted/30 flex md:flex-col py-4 md:py-6 px-4 md:fixed md:h-full relative">
         <div className="md:hidden w-full flex items-center justify-between">
-          <h1 className="text-xl font-bold">Applify</h1>
+          <div className="flex items-center gap-2">
+            <img src={logo} alt="Applify" className="w-8 h-8" />
+            <h1 className="text-xl font-bold">Applify</h1>
+          </div>
           <div className="flex items-center gap-2">
             <button
               onClick={() => setMobileNavOpen((v) => !v)}
@@ -143,7 +148,10 @@ function HistoryPage() {
           </nav>
         </div>
 
-        <h1 className="hidden md:block text-2xl font-bold px-2 mb-8 text-app-text dark:text-app-ivory">Applify</h1>
+        <div className="hidden md:flex items-center gap-2 px-2 mb-8">
+          <img src={logo} alt="Applify" className="w-10 h-10" />
+          <h1 className="text-2xl font-bold text-app-text dark:text-app-ivory">Applify</h1>
+        </div>
 
         <nav className="hidden md:flex md:flex-col gap-1 flex-1">
           {navItems.map(({ id, label, icon: Icon }) => (
@@ -181,7 +189,14 @@ function HistoryPage() {
               <h2 className="text-xl font-semibold text-app-text dark:text-app-ivory mb-6">Analysis History</h2>
 
               {loading ? (
-                <p className="text-sm text-gray-400 dark:text-app-muted">Loading...</p>
+                <Loading
+                  messages={[
+                    'Loading your analysis history...',
+                    'Fetching previous resume reviews...',
+                    'Rebuilding your history timeline...'
+                  ]}
+                  className="text-gray-400 dark:text-app-muted"
+                />
               ) : analyses.length === 0 ? (
                 <p className="text-app-muted">No analyses yet.</p>
               ) : (

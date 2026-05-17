@@ -11,6 +11,8 @@ import {
   Menu,
   X
 } from 'lucide-react';
+import Loading from '../components/loading';
+import logo from '../assets/logo.svg';
 
 const API = 'http://127.0.0.1:8000';
 
@@ -99,7 +101,10 @@ function ResumePage() {
           </nav>
         </div>
 
-        <h1 className="hidden md:block text-2xl font-bold text-app-text dark:text-app-ivory px-2 mb-8">Applify</h1>
+        <div className="hidden md:flex items-center gap-2 px-2 mb-8">
+          <img src={logo} alt="Applify" className="w-10 h-10" />
+          <h1 className="text-2xl font-bold text-app-text dark:text-app-ivory">Applify</h1>
+        </div>
 
         <nav className="hidden md:flex md:flex-col gap-1 flex-1">
           {navItems.map(({ id, label, icon: Icon }) => (
@@ -132,7 +137,14 @@ function ResumePage() {
           <h2 className="text-xl font-semibold text-app-text dark:text-app-ivory mb-6">My Resumes</h2>
 
           {loading ? (
-            <p className="text-app-muted text-sm">Loading...</p>
+            <Loading
+              messages={[
+                'Loading your resumes...',
+                'Organizing uploaded files...',
+                'Preparing your resume library...'
+              ]}
+              className="text-app-muted"
+            />
           ) : resumes.length === 0 ? (
             <div className="bg-white dark:bg-app-panel rounded-2xl border border-gray-200 dark:border-app-muted/30 p-8 sm:p-12 text-center shadow-sm">
               <FileText size={32} className="text-gray-300 dark:text-app-muted mx-auto mb-3" />

@@ -5,8 +5,15 @@ import axios from 'axios';
 import {
   LayoutDashboard, FileText, History, LogOut, Upload, Briefcase, ChevronRight, ArrowLeft, Menu, X, Sun, Moon
 } from 'lucide-react';
-import { ThreeDot } from 'react-loading-indicators';
 import { useDarkMode } from '../hooks/DarkMode';
+import logo from '../assets/logo.svg';
+import classicThumb from '../assets/templates/classic.svg';
+import modernThumb from '../assets/templates/modern.svg';
+import executiveThumb from '../assets/templates/executive.svg';
+import creativeThumb from '../assets/templates/creative.svg';
+import academicThumb from '../assets/templates/academic.svg';
+import minimalThumb from '../assets/templates/minimal.svg';
+import Loading from '../components/loading';
 
 const API = 'http://127.0.0.1:8000';
 
@@ -58,6 +65,15 @@ const templates = [
 ];
 
 function TemplateModal({ onSelect, onClose }) {
+  const thumbMap = {
+    classic: classicThumb,
+    modern: modernThumb,
+    executive: executiveThumb,
+    creative: creativeThumb,
+    academic: academicThumb,
+    minimal: minimalThumb,
+  };
+
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
       <div className="bg-white rounded-2xl p-8 shadow-2xl w-full max-w-2xl mx-4">
@@ -72,10 +88,13 @@ function TemplateModal({ onSelect, onClose }) {
             <button
               key={template.id}
               onClick={() => onSelect(template.id)}
-              className="text-left p-4 rounded-xl border border-gray-200 hover:border-[#4A7C59] hover:bg-[#4A7C59]/5 transition"
+              className="text-left p-3 rounded-xl border border-gray-200 hover:border-[#4A7C59] hover:bg-[#4A7C59]/5 transition flex items-start gap-4"
             >
-              <p className="font-semibold text-[#2C2F2E] mb-1">{template.name}</p>
-              <p className="text-xs text-[#9C9A9A]">{template.description}</p>
+              <img src={thumbMap[template.id]} alt={`${template.name} thumbnail`} className="w-28 h-36 object-cover rounded-md border" />
+              <div>
+                <p className="font-semibold text-[#2C2F2E] mb-1">{template.name}</p>
+                <p className="text-xs text-[#9C9A9A]">{template.description}</p>
+              </div>
             </button>
           ))}
         </div>
@@ -97,6 +116,7 @@ function Dashboard() {
   const [resumes, setResumes] = useState([]);
   const [analysis, setAnalysis] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [loadingTask, setLoadingTask] = useState('');
   const [error, setError] = useState('');
   const [step, setStep] = useState('upload');
   const [activeNav, setActiveNav] = useState('dashboard');
@@ -121,6 +141,7 @@ function Dashboard() {
   const handleResumeUpload = async () => {
     if (!file) return setError('Please select a PDF file');
     setLoading(true);
+    setLoadingTask('upload');
     setError('');
     try {
       const token = await getToken();
@@ -135,6 +156,7 @@ function Dashboard() {
       setError('Resume upload failed. Please try again.');
     } finally {
       setLoading(false);
+      setLoadingTask('');
     }
   };
 
@@ -148,10 +170,11 @@ function Dashboard() {
   const handleResumeUpgrade = async (templateId) => {
     try {
       setLoading(true);
+      setLoadingTask('upgrade');
       const token = await getToken();
       const res = await axios.post(
         `${API}/upgrade/fit-resume`,
-        { resume_id: resumeId, analysis_id: analysisId, resume_template: templateId },
+        { resume_id: resumeId, analysis_id: analysisId, template_id: templateId },
         { headers: { Authorization: `Bearer ${token}` }, responseType: 'blob', timeout: 120000 }
       );
 
@@ -166,6 +189,7 @@ function Dashboard() {
       setError('Resume upgrade failed. Please try again.');
     } finally {
       setLoading(false);
+      setLoadingTask('');
     }
   };
 
@@ -173,6 +197,7 @@ function Dashboard() {
     if (!jobDescription) return setError('Please enter a job description');
     if (!jobTitle) return setError('Please enter a job title');
     setLoading(true);
+    setLoadingTask('analyze');
     setError('');
     try {
       const token = await getToken();
@@ -188,6 +213,7 @@ function Dashboard() {
       setError('Analysis failed. Please try again.');
     } finally {
       setLoading(false);
+      setLoadingTask('');
     }
   };
 
@@ -202,12 +228,21 @@ function Dashboard() {
     { id: 'history', label: 'History', icon: History },
   ];
 
+  const loadingMessages = {
+    upload: ['Uploading your resume...', 'Reading the file structure...', 'Extracting resume details...'],
+    analyze: ['Analyzing the job description...', 'Comparing skills and keywords...', 'Building your match insights...'],
+    upgrade: ['Generating your fitted resume...', 'Matching content to the template...', 'Preparing your PDF download...'],
+  };
+
   return (
     <div className="min-h-screen flex flex-col md:flex-row bg-app-page dark:bg-app-dark text-app-text dark:text-app-ivory">
       <aside className="w-full md:w-64 bg-white dark:bg-app-panel border-b md:border-b-0 md:border-r border-gray-200 dark:border-app-muted/30 flex md:flex-col py-4 md:py-6 px-4 md:fixed md:h-full relative">
         {/* Mobile top bar */}
         <div className="md:hidden w-full flex items-center justify-between">
-          <h1 className="text-xl font-bold">Applify</h1>
+          <div className="flex items-center gap-2">
+            <img src={logo} alt="Applify" className="w-8 h-8" />
+            <h1 className="text-xl font-bold">Applify</h1>
+          </div>
           <div className="flex items-center gap-2">
             <button
               onClick={() => setMobileNavOpen((v) => !v)}
@@ -253,7 +288,10 @@ function Dashboard() {
         </div>
 
         {/* Desktop nav */}
-        <h1 className="hidden md:block text-2xl font-bold px-2 mb-8 text-app-text dark:text-app-ivory">Applify</h1>
+        <div className="hidden md:flex items-center gap-2 px-2 mb-8">
+          <img src={logo} alt="Applify" className="w-10 h-10" />
+          <h1 className="text-2xl font-bold text-app-text dark:text-app-ivory">Applify</h1>
+        </div>
 
         <nav className="hidden md:flex md:flex-col gap-1 flex-1">
           {navItems.map(({ id, label, icon: Icon }) => (
@@ -353,9 +391,9 @@ function Dashboard() {
                 <button
                   onClick={handleResumeUpload}
                   disabled={loading}
-                  className="w-full bg-app-brand hover:bg-app-brand-hover text-white font-semibold py-2.5 rounded-xl transition"
+                  className="w-full bg-app-brand hover:bg-app-brand-hover text-white font-semibold py-2.5 rounded-xl transition inline-flex items-center justify-center"
                 >
-                  {loading ? <ThreeDot variant="brick-stack" color="white" size="small" /> : 'Upload Resume'}
+                    {loading ? <Loading compact messages={loadingMessages[loadingTask] || loadingMessages.upload} /> : 'Upload Resume'}
                 </button>
               </div>
 
@@ -426,9 +464,9 @@ function Dashboard() {
                 <button
                   onClick={handleAnalysis}
                   disabled={loading}
-                  className="w-full bg-app-brand hover:bg-app-brand-hover text-white font-semibold py-2.5 rounded-xl transition"
+                  className="w-full bg-app-brand hover:bg-app-brand-hover text-white font-semibold py-2.5 rounded-xl transition inline-flex items-center justify-center"
                 >
-                  {loading ? <ThreeDot variant="brick-stack" color="white" size="small" /> : 'Analyze Resume'}
+                    {loading ? <Loading compact messages={loadingMessages[loadingTask] || loadingMessages.analyze} /> : 'Analyze Resume'}
                 </button>
               </div>
             </div>
@@ -496,11 +534,11 @@ function Dashboard() {
               </div>
 
               <button
-                className="w-full bg-app-brand hover:bg-app-brand-hover text-white font-semibold py-3 rounded-xl transition text-base"
+                className="w-full bg-app-brand hover:bg-app-brand-hover text-white font-semibold py-3 rounded-xl transition text-base inline-flex items-center justify-center"
                 onClick={() => setShowTemplateModal(true)}
                 disabled={loading}
               >
-                {loading ? <ThreeDot variant="brick-stack" color="white" size="small" /> : 'Fit Resume to Job Description'}
+                {loading ? <Loading compact messages={loadingMessages[loadingTask] || loadingMessages.upgrade} /> : 'Fit Resume to Job Description'}
               </button>
 
               <button

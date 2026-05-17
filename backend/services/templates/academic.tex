@@ -12,44 +12,38 @@
 \raggedright
 
 \titleformat{\section}{\color{darkblue}\large\bfseries}{}{0em}{}[\color{darkblue}\titlerule]
-\titlespacing*{\section}{0pt}{0.9em plus 0.2em minus 0.1em}{0.7em plus 0.2em}
 
 \newcommand{\resumeItem}[1]{\item\small{#1\vspace{-2pt}}}
 \newcommand{\resumeItemListStart}{\begin{itemize}[leftmargin=*,topsep=2pt]}
-\newcommand{\resumeItemListEnd}{\end{itemize}\vspace{2pt}}
+\newcommand{\resumeItemListEnd}{\end{itemize}\vspace{-4pt}}
 
 % ============================================================
-% ACADEMIC TEMPLATE - Publication focused for research roles
-% Fill all sections with resume data
-% Apply all improvements from analysis
+% ACADEMIC TEMPLATE
+% Fill ALL sections with resume data - omit section only if empty
+% Apply all improvements from analysis - do not truncate content
 % ============================================================
 
 \begin{document}
 
-% HEADING
 \begin{center}
   {\LARGE\bfseries CANDIDATE NAME} \\ \vspace{4pt}
   \small EMAIL $|$ PHONE $|$ LOCATION \\ \vspace{2pt}
   \small \href{LINKEDIN}{\underline{LinkedIn}} $|$ \href{GITHUB}{\underline{GitHub}}
 \end{center}
 
-% RESEARCH INTERESTS / SUMMARY
-\section{Research Interests}
+\section{Research Interests / Summary}
 SUMMARY
 
-% EDUCATION
 \section{Education}
 \textbf{DEGREE, FIELD OF STUDY} \hfill GRADUATION DATE \\
 \textit{INSTITUTION, LOCATION} \\
 GPA: GPA
 
-% PUBLICATIONS
 \section{Publications}
 \resumeItemListStart
-  \resumeItem{PUBLICATION TITLE. \textit{PUBLISHER}, DATE.}
+  \resumeItem{TITLE. \textit{PUBLISHER}, DATE.}
 \resumeItemListEnd
 
-% EXPERIENCE
 \section{Research \& Professional Experience}
 \textbf{ROLE} \hfill DURATION \\
 \textit{COMPANY, LOCATION}
@@ -57,21 +51,28 @@ GPA: GPA
   \resumeItem{RESPONSIBILITY}
 \resumeItemListEnd
 
-% PROJECTS
 \section{Projects}
 \textbf{PROJECT NAME} $|$ \textit{TECHNOLOGIES} \hfill DATE
 \resumeItemListStart
   \resumeItem{DESCRIPTION}
 \resumeItemListEnd
 
-% SKILLS
 \section{Technical Skills}
 \small LIST ALL SKILLS
 
-% CERTIFICATIONS
 \section{Certifications \& Awards}
 \resumeItemListStart
-  \resumeItem{LIST CERTIFICATIONS AND AWARDS}
+  \resumeItem{LIST ALL CERTIFICATIONS AND AWARDS}
 \resumeItemListEnd
+
+\section{Volunteer Work}
+\textbf{ORGANIZATION} \hfill DURATION \\
+\textit{ROLE}
+\resumeItemListStart
+  \resumeItem{DESCRIPTION}
+\resumeItemListEnd
+
+\section{Languages}
+\small LIST ALL LANGUAGES
 
 \end{document}

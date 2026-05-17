@@ -5,7 +5,6 @@
 \usepackage[hidelinks]{hyperref}
 \usepackage{xcolor}
 \usepackage{titlesec}
-\usepackage{microtype}
 
 \definecolor{darkgray}{RGB}{50,50,50}
 \definecolor{medgray}{RGB}{120,120,120}
@@ -14,22 +13,20 @@
 \raggedbottom
 \raggedright
 
-\titleformat{\section}{\large\scshape\color{darkgray}}{}{0em}{}[\rule{\linewidth}{0.4pt}]
-\titlespacing*{\section}{0pt}{0.9em plus 0.2em minus 0.1em}{0.7em plus 0.2em}
+\titleformat{\section}{\large\scshape\color{darkgray}}{}{0em}{}[\vspace{-6pt}\rule{\linewidth}{0.4pt}\vspace{-4pt}]
 
 \newcommand{\resumeItem}[1]{\item\small{#1\vspace{-2pt}}}
 \newcommand{\resumeItemListStart}{\begin{itemize}[leftmargin=*,topsep=2pt,itemsep=1pt]}
-\newcommand{\resumeItemListEnd}{\end{itemize}\vspace{2pt}}
+\newcommand{\resumeItemListEnd}{\end{itemize}\vspace{-4pt}}
 
 % ============================================================
-% EXECUTIVE TEMPLATE - Elegant minimal for senior roles
-% Fill all sections with resume data
-% Apply all improvements from analysis
+% EXECUTIVE TEMPLATE
+% Fill ALL sections with resume data - omit section only if empty
+% Apply all improvements from analysis - do not truncate content
 % ============================================================
 
 \begin{document}
 
-% HEADING
 \begin{center}
   {\LARGE\scshape\bfseries CANDIDATE NAME} \\ \vspace{6pt}
   {\color{medgray}\small LOCATION $\cdot$ EMAIL $\cdot$ PHONE} \\ \vspace{2pt}
@@ -38,11 +35,9 @@
 
 \vspace{8pt}
 
-% EXECUTIVE SUMMARY
 \section{Executive Summary}
 \small SUMMARY
 
-% PROFESSIONAL EXPERIENCE
 \section{Professional Experience}
 \textbf{ROLE} \hfill \textit{DURATION} \\
 {\small\scshape COMPANY} $\cdot$ \small LOCATION \vspace{4pt}
@@ -50,20 +45,35 @@
   \resumeItem{RESPONSIBILITY}
 \resumeItemListEnd
 
-% EDUCATION
 \section{Education}
-\textbf{DEGREE} \hfill GRADUATION DATE \\
-{\small\scshape INSTITUTION} $\cdot$ LOCATION
+\textbf{DEGREE, FIELD OF STUDY} \hfill GRADUATION DATE \\
+{\small\scshape INSTITUTION} $\cdot$ LOCATION \\
+\small GPA: GPA
 
-% CORE COMPETENCIES
-\section{Core Competencies}
-\small LIST ALL SKILLS SEPARATED BY $\cdot$
-
-% KEY PROJECTS
 \section{Key Projects}
 \textbf{PROJECT NAME} $|$ \textit{TECHNOLOGIES} \hfill DATE
 \resumeItemListStart
   \resumeItem{DESCRIPTION}
+\resumeItemListEnd
+
+\section{Core Competencies}
+\small LIST ALL SKILLS SEPARATED BY $\cdot$
+
+\section{Certifications \& Awards}
+\resumeItemListStart
+  \resumeItem{LIST ALL CERTIFICATIONS AND AWARDS}
+\resumeItemListEnd
+
+\section{Volunteer Work}
+\textbf{ORGANIZATION} \hfill DURATION \\
+\textit{ROLE}
+\resumeItemListStart
+  \resumeItem{DESCRIPTION}
+\resumeItemListEnd
+
+\section{Publications}
+\resumeItemListStart
+  \resumeItem{TITLE. \textit{PUBLISHER}, DATE.}
 \resumeItemListEnd
 
 \end{document}

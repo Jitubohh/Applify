@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="280" height="360" viewBox="0 0 280 360">
+  <rect width="100%" height="100%" fill="#ffffff" stroke="#e6e7eb"/>
+  <rect x="16" y="18" width="248" height="28" fill="#0ea5e9" rx="4"/>
+  <rect x="16" y="56" width="248" height="8" fill="#dbeafe"/>
+  <rect x="16" y="80" width="248" height="170" fill="#ffffff"/>
+  <text x="24" y="36" fill="#ffffff" font-size="12" font-family="Arial">Academic</text>
+</svg>
